@@ -4,7 +4,7 @@ import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import {useTelegram} from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
 
-export const RulesUser = () => {
+export const ChoiseClass = () => {
     const {tg} = useTelegram();
     const navigate = useNavigate();
     useEffect(() => {

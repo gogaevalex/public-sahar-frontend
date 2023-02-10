@@ -4,6 +4,7 @@ import {useTelegram} from "./hooks/useTelegram";
 import {Header} from "./components/Header";
 import {Route, Routes} from 'react-router-dom'
 import {RulesUser} from "./pages/RulesUser";
+import {ChoiseClass} from "./pages/ChoiseClass";
 import {Form} from "./components/Form";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Header />
             <Routes>
                 <Route index element={<RulesUser />}/>
+                <Route path={'choiseClass'} element={<ChoiseClass />}/>
                 <Route path={'form'} element={<Form />}/>
             </Routes>
         </div>
