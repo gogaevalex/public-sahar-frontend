@@ -1,6 +1,6 @@
 import React, {useState}  from 'react';
 import st from '@emotion/styled';
-import { css, keyframes } from '@emotion/react'
+import { keyframes } from '@emotion/react'
 import pt from 'prop-types';
 
 export const Select = ({
