@@ -10,11 +10,9 @@ export const RulesUser = () => {
     useEffect(() => {
         tg.MainButton.setParams({
             text: 'Отправить данные'
-        })
-        tg.onEvent('mainButtonClicked', navigate('/choiseClass'))
-        return () => {
-            tg.offEvent('mainButtonClicked', navigate('/choiseClass'))
-        }
+        });
+        tg.MainButton.show();
+        tg.onEvent('mainButtonClicked', navigate('/choiseClass'));
     }, [])
     // useEffect(() => {
     //     tg.onEvent('mainButtonClicked', navigate('/'))
