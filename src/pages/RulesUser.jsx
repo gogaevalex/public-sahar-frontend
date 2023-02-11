@@ -3,34 +3,27 @@ import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import {useTelegram} from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
+import { MainLayout } from '../components/MainLayout';
 
 export const RulesUser = () => {
+
     const {tg} = useTelegram();
-    const navigate = useNavigate();
-    useEffect(() => {
-        tg.MainButton.setParams({
-            text: 'Отправить данные'
-        });
-        tg.MainButton.show();
-        tg.onEvent('mainButtonClicked', () => navigate('/choiseClass'));
-    }, [])
-    // useEffect(() => {
-    //     tg.onEvent('mainButtonClicked', navigate('/'))
-    //     return () => {
-    //         tg.offEvent('mainButtonClicked', navigate('/'))
-    //     }
-    // }, [])
+    const onClose = () => {
+        tg.close();
+    }
 
     return (
-        <Parent>
-            <Header>
-            Правила пользования
-            </Header>
-            <BodyContent>
-            Нажимая кнопку “Продолжить” я соглашаюсь с правилами пользования и с правилами кофиденцальности и подтверждаю что мой возраст больше 14 лет.
-            </BodyContent>
-            <img src={RulesSmilePicture} alt="rulesSmilePicture"/>
-        </Parent>
+        <MainLayout nextPage={"/choiseClass"} clickBackPage={onClose} >
+            <Parent>
+                <Header>
+                Правила пользования
+                </Header>
+                <BodyContent>
+                Нажимая кнопку “Продолжить” я соглашаюсь с правилами пользования и с правилами кофиденцальности и подтверждаю что мой возраст больше 14 лет.
+                </BodyContent>
+                <img src={RulesSmilePicture} alt="rulesSmilePicture"/>
+            </Parent>
+        </MainLayout>
     )
 }
 

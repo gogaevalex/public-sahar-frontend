@@ -14,17 +14,12 @@ function App() {
         tg.ready();
     }, [])
 
-    const onClose = () => {
-        tg.close();
-    }
-
     return (
         <div className="App">
-            <Header />
             <Routes>
                 <Route path="/" element={<RulesUser />}/>
                 <Route path={'/choiseClass'} element={<ChoiseClass />}/>
-                <Route path={'/form'} element={<Form />}/>
+                {/* <Route path={'/form'} element={<Form />}/> */}
             </Routes>
         </div>
     );
