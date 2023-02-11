@@ -42,8 +42,8 @@ const Parent = st.div`
 const BackPage = st.div`
     position: absolute;
     left: 10px;
-    top: 15px;
-    padding: 5px;
+    top: 24px;
+    padding: 6px;
     cursor: pointer;
 `;
 
