@@ -1,38 +1,66 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
-import {useTelegram} from "../hooks/useTelegram";
-import { useNavigate } from 'react-router-dom';
+import { MainLayout } from '../components/MainLayout';
+
+const dataClass = [
+    {
+        text: "Я еще даже не в 6-ом классе",
+        id: 5,
+    },
+    {
+        text: "6-ой класс",
+        id: 6,
+    },
+    {
+        text: "7-ой класс ",
+        id: 7,
+    },
+    {
+        text: "8-ой класс ",
+        id: 8,
+    },
+    {
+        text: "9-ой класс ",
+        id: 9,
+    },
+    {
+        text: "10-ой класс ",
+        id: 10,
+    },
+    {
+        text: "11-ой класс ",
+        id: 11,
+    },
+    {
+        text: "Я уже закончил(а) школу",
+        id: 12,
+    },
+]
 
 export const ChoiseClass = () => {
-    const {tg} = useTelegram();
-    const navigate = useNavigate();
-    useEffect(() => {
-        tg.MainButton.setParams({
-            text: 'Отправить данные'
-        })
-        tg.onEvent('mainButtonClicked', navigate('/choiseClass'))
-        return () => {
-            tg.offEvent('mainButtonClicked', navigate('/choiseClass'))
-        }
-    }, [])
-    // useEffect(() => {
-    //     tg.onEvent('mainButtonClicked', navigate('/'))
-    //     return () => {
-    //         tg.offEvent('mainButtonClicked', navigate('/'))
-    //     }
-    // }, [])
+    const [activeClass, setActiveClass] = useState(null);
 
     return (
-        <Parent>
-            <Header>
-            Правила пользования 111111111111111111
-            </Header>
-            <BodyContent>
-            Нажимая кнопку “Продолжить” я соглашаюсь с правилами пользования и с правилами кофиденцальности и подтверждаю что мой возраст больше 14 лет.
-            </BodyContent>
-            <img src={RulesSmilePicture} alt="rulesSmilePicture"/>
-        </Parent>
+        <MainLayout nextPage={"/choiseCity"}>
+            <Parent>
+                <Header>
+                    В каком ты классе?
+                </Header>
+                <BodyContent>
+                    {dataClass.map(({text, id}) => (
+                        <OneClass key={id}>
+                            <Text>
+                                {text}
+                            </Text>
+                            <ButtonSelect onClick={() => setActiveClass(id)} activeColor={activeClass === id}>
+                                {activeClass === id ? "V" : "X"}
+                            </ButtonSelect>
+                        </OneClass>
+                    ))}
+                </BodyContent>
+            </Parent>
+        </MainLayout>
     )
 }
 
@@ -53,5 +81,25 @@ const Header = st.div`
 const BodyContent = st.div`
     text-align: center;
     padding: 0 0 50px 0;
+    width: 100%;
+`;
+
+const OneClass = st.div`
+    border-bottom: 1px solid var(--tg-theme-text-color);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+`;
+
+const Text = st.div`
+
+`;
+
+const ButtonSelect = st.div`
+    background: ${({activeColor}) => activeColor ? "#05B2DC" : "#F15BB5"};
+    cursor: pointer;
+    padding: 6px 18px;
+    border-radius: 4px;
 `;
 
