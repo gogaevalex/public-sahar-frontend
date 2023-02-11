@@ -12,8 +12,8 @@ export const MainLayout = ({children, clickBackPage = null, showMainButton = tru
             text: 'Продолжить'
         });
         tg.onEvent('mainButtonClicked', () => {
-            clickMainButton();
-            nextPage ? navigate(nextPage) : null
+            clickMainButton ? clickMainButton() : null;
+            nextPage ? navigate(nextPage) : null;
         });
     }, [])
 
