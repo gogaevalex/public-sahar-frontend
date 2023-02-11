@@ -42,7 +42,7 @@ const Parent = st.div`
 const BackPage = st.div`
     position: absolute;
     left: 10px;
-    top: 10px;
+    top: 15px;
     padding: 5px;
     cursor: pointer;
 `;
