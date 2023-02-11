@@ -88,7 +88,7 @@ const OneClass = st.div`
     border-bottom: 1px solid var(--tg-theme-text-color);
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    padding: 14px 0;
     align-items: center;
 `;
 
