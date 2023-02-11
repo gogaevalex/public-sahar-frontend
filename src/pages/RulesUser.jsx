@@ -12,7 +12,7 @@ export const RulesUser = () => {
             text: 'Отправить данные'
         });
         tg.MainButton.show();
-        tg.onEvent('mainButtonClicked', navigate('/choiseClass'));
+        tg.onEvent('mainButtonClicked', () => navigate('/choiseClass'));
     }, [])
     // useEffect(() => {
     //     tg.onEvent('mainButtonClicked', navigate('/'))

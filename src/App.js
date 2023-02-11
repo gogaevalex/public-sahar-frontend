@@ -22,9 +22,9 @@ function App() {
         <div className="App">
             <Header />
             <Routes>
-                <Route index element={<RulesUser />}/>
-                <Route path={'choiseClass'} element={<ChoiseClass />}/>
-                <Route path={'form'} element={<Form />}/>
+                <Route path="/" element={<RulesUser />}/>
+                <Route path={'/choiseClass'} element={<ChoiseClass />}/>
+                <Route path={'/form'} element={<Form />}/>
             </Routes>
         </div>
     );
