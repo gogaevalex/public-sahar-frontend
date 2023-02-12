@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import st from '@emotion/styled'
-import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import { MainLayout } from '../components/MainLayout';
 import { CrossIcon } from '../icons/CrossIcon';
-import { TickIcon } from '../icons/TickIcon'
+import { TickIcon } from '../icons/TickIcon';
+
 const dataClass = [
     {
         text: "Я еще даже не в 6-ом классе",

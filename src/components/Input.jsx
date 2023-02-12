@@ -30,6 +30,7 @@ const Parent = st.div`
 `;
 
 const Field = st.input`
+    background: var(--tg-theme-bg-color);
     border: none;
     color: var(--tg-theme-text-color);
     font-size: 20px;

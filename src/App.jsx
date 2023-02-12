@@ -1,11 +1,12 @@
 import './App.css';
 import {useEffect} from "react";
 import {useTelegram} from "./hooks/useTelegram";
-import {Header} from "./components/Header";
 import {Route, Routes} from 'react-router-dom'
 import {RulesUser} from "./pages/RulesUser";
 import {ChoiseClass} from "./pages/ChoiseClass";
 import {ChoiseCity} from "./pages/ChoiseCity";
+import {ChoiseSchool} from "./pages/ChoiseSchool";
+
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/" element={<RulesUser />}/>
                 <Route path={'/choiseClass'} element={<ChoiseClass />}/>
                 <Route path={'/choiseCity'} element={<ChoiseCity />}/>
+                <Route path={'/choiseSchool'} element={<ChoiseSchool />}/>
             </Routes>
         </div>
     );
