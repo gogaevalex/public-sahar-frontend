@@ -5,7 +5,8 @@ import {Header} from "./components/Header";
 import {Route, Routes} from 'react-router-dom'
 import {RulesUser} from "./pages/RulesUser";
 import {ChoiseClass} from "./pages/ChoiseClass";
-import {Form} from "./components/Form";
+import {ChoiseCity} from "./pages/ChoiseCity";
+
 
 function App() {
     const {onToggleButton, tg} = useTelegram();
@@ -19,7 +20,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<RulesUser />}/>
                 <Route path={'/choiseClass'} element={<ChoiseClass />}/>
-                {/* <Route path={'/form'} element={<Form />}/> */}
+                <Route path={'/choiseCity'} element={<ChoiseCity />}/>
             </Routes>
         </div>
     );
