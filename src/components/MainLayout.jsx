@@ -7,7 +7,9 @@ import {useTelegram} from "../hooks/useTelegram";
 export const MainLayout = ({children, clickBackPage = null, showMainButton = true, clickMainButton, nextPage}) => {
     const {tg} = useTelegram();
     const navigate = useNavigate();
+
     useEffect(() => {
+        tg.ready();
         tg.MainButton.setParams({
             text: 'Продолжить'
         });
