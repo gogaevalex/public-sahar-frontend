@@ -64,7 +64,7 @@ const BlockImageGirl = st.div`
     width: 134px;
     border-radius: 10px;
     padding: 2px;
-    border: 2px solid var(--tg-theme-text-color);
+    border: ${(active) => active && "2px solid var(--tg-theme-text-color)"};
     align-items: center;
     display: flex;
     justify-content: center;
