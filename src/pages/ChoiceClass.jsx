@@ -77,6 +77,7 @@ const Header = st.div`
     text-align: center;
     font-size: 40px;
     padding: 0 0 30px 0;
+    max-width: 150px;
 `;
 
 const BodyContent = st.div`
