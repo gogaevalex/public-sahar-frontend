@@ -54,7 +54,7 @@ export const ChoiceFriend = () => {
         <MainLayout nextPage={"/choiceGender"}>
             <Parent>
                 <Header>
-                    В каком ты классе?
+                    Добавь всех кого знаешь
                 </Header>
                 <BodyContent>
                     {dataFriend.map(({name, id}) => {
