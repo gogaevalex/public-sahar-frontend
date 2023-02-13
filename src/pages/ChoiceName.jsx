@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import st from '@emotion/styled'
-import CityPicture from '../pictures/CityPicture.png';
+import NamePicture from '../pictures/NamePicture.png';
 import { MainLayout } from '../components/MainLayout';
 import {Input} from '../components/Input';
 
-export const ChoiseCity = () => {
+export const ChoiceName = () => {
     const [value, setValue] = useState("");
 
     return (
-        <MainLayout nextPage={"/choiseSchool"}>
+        <MainLayout nextPage={"/choiceFamily"}>
             <Parent>
                 <Header>
-                    Твой город
+                    Твое имя
                 </Header>
                 <BlockImage>
-                    <img src={CityPicture} alt="cityPicture"/>
+                    <img src={NamePicture} alt="namePicture"/>
                 </BlockImage>
-                <Input value={value} onChange={setValue} placeholder="Например: Великий Новгород" />
+                <Input value={value} onChange={setValue} placeholder="Например: Женя" />
             </Parent>
         </MainLayout>
     )

@@ -38,5 +38,6 @@ const Field = st.input`
     ::placeholder {
         color: #FDFDFF";
         opacity: 1;
+        text-align:center;
     }
 `;

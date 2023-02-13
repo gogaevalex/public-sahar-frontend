@@ -48,11 +48,11 @@ const shortText = (text) => {
     } else return text;
 }
 
-export const ChoiseSchool = () => {
+export const ChoiceSchool = () => {
     const [activeSchool, setActiveSchool] = useState(null);
 
     return (
-        <MainLayout nextPage={"/choiseCity"}>
+        <MainLayout nextPage={"/choiceName"}>
             <Parent>
                 <Header>
                     Выбери свою школу

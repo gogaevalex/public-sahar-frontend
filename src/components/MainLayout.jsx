@@ -37,6 +37,7 @@ export const MainLayout = ({children, clickBackPage = null, showMainButton = tru
 
 const Parent = st.div`
     height: 100vh;
+    margin: 20px 0 0 0;
 `;
 
 const BackPage = st.div`

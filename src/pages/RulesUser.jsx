@@ -12,7 +12,7 @@ export const RulesUser = () => {
     }
 
     return (
-        <MainLayout nextPage={"/choiseClass"} clickBackPage={onClose} >
+        <MainLayout nextPage={"/choiceClass"} clickBackPage={onClose} >
             <Parent>
                 <Header>
                 Правила пользования

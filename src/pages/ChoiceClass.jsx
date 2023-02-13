@@ -39,11 +39,11 @@ const dataClass = [
     },
 ]
 
-export const ChoiseClass = () => {
+export const ChoiceClass = () => {
     const [activeClass, setActiveClass] = useState(null);
 
     return (
-        <MainLayout nextPage={"/choiseCity"}>
+        <MainLayout nextPage={"/choiceCity"}>
             <Parent>
                 <Header>
                     В каком ты классе?
@@ -83,6 +83,7 @@ const BodyContent = st.div`
     text-align: center;
     padding: 0 0 50px 0;
     width: 100%;
+    max-height: 300px;
     overflow: auto;
 `;
 
