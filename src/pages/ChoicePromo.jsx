@@ -26,7 +26,7 @@ export const ChoicePromo = () => {
                     <FooterText>
                     *и ты приглашай друзей со своим промокодом:
                     </FooterText>
-                    <CopyBlock onClick={() => copyToClipboard}>
+                    <CopyBlock onClick={copyToClipboard}>
                     <CopyText copySuccess={copySuccess} >DD23FG585</CopyText>
                     <CopyButton >
                         <CopyIcon />
