@@ -43,7 +43,7 @@ export const ChoiceClass = () => {
     const [activeClass, setActiveClass] = useState(null);
 
     return (
-        <MainLayout nextPage={"/choiceCity"}>
+        <MainLayout nextPage={"/choiceCity"} prevPage={"/"}>
             <Parent>
                 <Header>
                     В каком ты классе?

@@ -8,7 +8,7 @@ export const ChoiceCity = () => {
     const [value, setValue] = useState("");
 
     return (
-        <MainLayout nextPage={"/choiceSchool"}>
+        <MainLayout nextPage={"/choiceSchool"} prevPage={"/choiceClass"}>
             <Parent>
                 <Header>
                     Твой город

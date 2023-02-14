@@ -4,7 +4,14 @@ import {ArrowLeftIcon} from '../icons/ArrowLeftIcon';
 import { useNavigate } from 'react-router-dom';
 import {useTelegram} from "../hooks/useTelegram";
 
-export const MainLayout = ({children, clickBackPage = null, showMainButton = true, clickMainButton, nextPage}) => {
+export const MainLayout = ({
+    children,
+    clickBackPage = null,
+    showMainButton = true,
+    clickMainButton,
+    nextPage,
+    prevPage = "/"
+}) => {
     const {tg} = useTelegram();
     const navigate = useNavigate();
 
@@ -29,7 +36,7 @@ export const MainLayout = ({children, clickBackPage = null, showMainButton = tru
 
     return <Parent>
         <BackPage onClick={() => {
-            clickBackPage ? clickBackPage() : navigate(-1)
+            clickBackPage ? clickBackPage() : navigate(prevPage)
         }}>
             <ArrowLeftIcon />
         </BackPage>

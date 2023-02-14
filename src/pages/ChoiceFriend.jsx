@@ -51,7 +51,7 @@ export const ChoiceFriend = () => {
 
 
     return (
-        <MainLayout nextPage={"/choiceGender"}>
+        <MainLayout nextPage={"/choiceGender"} prevPage={"/choiceFamily"}>
             <Parent>
                 <Header>
                     Добавь всех кого знаешь

@@ -52,7 +52,7 @@ export const ChoiceSchool = () => {
     const [activeSchool, setActiveSchool] = useState(null);
 
     return (
-        <MainLayout nextPage={"/choiceName"}>
+        <MainLayout nextPage={"/choiceName"} prevPage={"/choiceCity"}>
             <Parent>
                 <Header>
                     Выбери свою школу

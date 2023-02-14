@@ -8,7 +8,7 @@ export const ChoiceFamily = () => {
     const [value, setValue] = useState("");
 
     return (
-        <MainLayout nextPage={"/choiceFriend"}>
+        <MainLayout nextPage={"/choiceFriend"} prevPage={"/choiceName"}>
             <Parent>
                 <Header>
                     Твоя фамилия

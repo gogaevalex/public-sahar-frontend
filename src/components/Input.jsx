@@ -32,6 +32,7 @@ const Parent = st.div`
 const Field = st.input`
     background: var(--tg-theme-bg-color);
     border: none;
+    width: 100%;
     color: var(--tg-theme-text-color);
     font-size: 20px;
     outline: none;
