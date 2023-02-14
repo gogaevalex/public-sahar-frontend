@@ -62,7 +62,7 @@ const FooterContent = st.div`
 `;
 
 const FooterText = st.div`
-margin: 0 0 6px 0;
+    margin: 0 0 6px 0;
 `;
 
 const CopyBlock = st.div`

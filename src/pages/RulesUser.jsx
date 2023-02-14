@@ -2,10 +2,12 @@ import React, {useEffect} from 'react';
 import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import {useTelegram} from "../hooks/useTelegram";
+import { useNavigate } from 'react-router-dom';
 
 export const RulesUser = () => {
 
     const {tg} = useTelegram();
+    const navigate = useNavigate();
 
     useEffect(() => {
         tg.ready();
