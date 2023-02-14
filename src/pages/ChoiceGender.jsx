@@ -9,7 +9,7 @@ export const ChoiceGender = () => {
     const [gender, setGender] = useState(null);
 
     return (
-        <MainLayout nextPage={"/choiceFamily"} prevPage={"/choiceFriend"}>
+        <MainLayout nextPage={"/choicePromo"} prevPage={"/choiceFriend"}>
             <Parent>
                 <Header>
                 Укажи свой пол
