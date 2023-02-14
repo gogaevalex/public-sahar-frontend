@@ -63,6 +63,8 @@ const FooterContent = st.div`
 
 const FooterText = st.div`
     margin: 0 0 6px 0;
+    text-align: center;
+
 `;
 
 const CopyBlock = st.div`
