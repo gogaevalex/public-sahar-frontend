@@ -18,7 +18,7 @@ export const ChoicePromo = () => {
     
 
     return (
-        <MainLayout nextPage={"/choiceFriend"} prevPage={"/choiceGender"}>
+        <MainLayout nextPage={"/infoBot"} prevPage={"/choiceGender"}>
             <Parent>
                 <Header>
                     Введи промокод от друга
