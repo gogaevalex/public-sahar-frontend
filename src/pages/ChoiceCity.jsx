@@ -6,7 +6,9 @@ import {Input} from '../components/Input';
 
 export const ChoiceCity = () => {
     const [value, setValue] = useState("");
-
+    const chageInput = (value) => {
+        setValue(value.replace(/[^а-яё\s]/gi, ''));
+    }
     return (
         <MainLayout nextPage={"/choiceSchool"} prevPage={"/choiceClass"}>
             <Parent>
@@ -16,7 +18,7 @@ export const ChoiceCity = () => {
                 <BlockImage>
                     <img src={CityPicture} alt="cityPicture"/>
                 </BlockImage>
-                <Input value={value} onChange={setValue} placeholder="Например: Великий Новгород" />
+                <Input value={value} onChange={chageInput} placeholder="Например: Великий Новгород" />
             </Parent>
         </MainLayout>
     )

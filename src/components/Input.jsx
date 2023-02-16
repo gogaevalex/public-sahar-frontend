@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import st from '@emotion/styled';
 
-export const Input = ({value, onChange, placeholder}) => {
+export const Input = ({value = '', onChange, placeholder}) => {
     const [focus, setFocus] = useState(false)
     return (
         <Parent focus={focus}>
             <Field
-                vlaue={value}
+                value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
                 type="text"
@@ -36,6 +36,7 @@ const Field = st.input`
     color: var(--tg-theme-text-color);
     font-size: 20px;
     outline: none;
+    text-align: center;
     ::placeholder {
         color: #FDFDFF";
         opacity: 1;

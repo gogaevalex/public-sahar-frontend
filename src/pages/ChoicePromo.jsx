@@ -9,9 +9,14 @@ export const ChoicePromo = () => {
     const [value, setValue] = useState("");
     const [copySuccess, setCopySuccess] = useState(false);
     const copyToClipboard = () => {
-        navigator.clipboard.writeText("DD23FG585")
-        setCopySuccess(true)
+        navigator.clipboard.writeText("DD23FG585");
+        setCopySuccess(true);
     }
+    const chageInput = (value) => {
+        setValue(value.slice(0, 10).replace(/[^a-z0-9\s]/gi, '').toUpperCase());
+    };
+    
+
     return (
         <MainLayout nextPage={"/choiceFriend"} prevPage={"/choiceGender"}>
             <Parent>
@@ -21,7 +26,7 @@ export const ChoicePromo = () => {
                 <BlockImage>
                     <img src={PromoPicture} alt="promoPicture"/>
                 </BlockImage>
-                <Input value={value} onChange={setValue} placeholder="Например: DD33DD334" />
+                <Input value={value} onChange={chageInput} placeholder="Например: DD33DD334" />
                 <FooterContent>
                     <FooterText>
                     *и ты приглашай друзей со своим промокодом:

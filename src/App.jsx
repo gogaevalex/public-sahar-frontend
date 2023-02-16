@@ -11,6 +11,9 @@ import {ChoiceFamily} from "./pages/ChoiceFamily";
 import {ChoiceFriend} from "./pages/ChoiceFriend";
 import {ChoiceGender} from "./pages/ChoiceGender";
 import {ChoicePromo} from "./pages/ChoicePromo";
+import {InfoBotPage} from "./pages/InfoBotPage";
+import {NewsLinePage} from "./pages/NewsLinePage";
+
 
 
 
@@ -33,6 +36,8 @@ function App() {
                 <Route path={'/choiceFriend'} element={<ChoiceFriend />}/>
                 <Route path={'/choiceGender'} element={<ChoiceGender />}/>
                 <Route path={'/choicePromo'} element={<ChoicePromo />}/>
+                <Route path={'/infoBot'} element={<InfoBotPage />}/>
+                <Route path={'/newsline'} element={<NewsLinePage />}/>
             </Routes>
         </div>
     );
