@@ -33,7 +33,7 @@ const dataFriend = [
 
 export const ChoiceFriend = () => {
     const [listFriend, setListFriend] = useState([]);
-
+    const peopleList = $api.get('/school/people/:id');
     const changeFriendList = (event, id) => {
         event.preventDefault();
         setListFriend((currentList) => {

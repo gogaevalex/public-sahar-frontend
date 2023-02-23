@@ -5,7 +5,7 @@ import { MainLayout } from '../components/MainLayout';
 
 export const InfoBotPage = () => {
     return (
-        <MainLayout nextPage={"/choicePromo"} prevPage={"/main"}>
+        <MainLayout nextPage={"/main"} prevPage={"/choicePromo"}>
             <Parent>
                 <Header>
                     ЭТО САХАР-БОТ!
