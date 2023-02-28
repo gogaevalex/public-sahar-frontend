@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import CityPicture from '../pictures/CityPicture.png';
 import { MainLayout } from '../components/MainLayout';
-import {Input} from '../components/Input';
+import { Input } from '../components/Input';
 
 export const ChoiceCity = () => {
     const [value, setValue] = useState("");
@@ -16,7 +16,7 @@ export const ChoiceCity = () => {
                     Твой город
                 </Header>
                 <BlockImage>
-                    <img src={CityPicture} alt="cityPicture"/>
+                    <img src={CityPicture} alt="cityPicture" />
                 </BlockImage>
                 <Input value={value} onChange={chageInput} placeholder="Например: Великий Новгород" />
             </Parent>

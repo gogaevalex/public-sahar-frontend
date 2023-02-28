@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import { MainLayout } from '../components/MainLayout';
 import { CrossIcon } from '../icons/CrossIcon';
@@ -41,21 +41,29 @@ const dataClass = [
 
 export const ChoiceClass = () => {
     const [activeClass, setActiveClass] = useState(null);
-
+    function randomChooseMaleFemale() {
+        // возвращает рандомное число от min до max
+        const randomNum = Math.round(Math.random());
+        return randomNum == 1 ? "female" : "male"
+    }
+    const randomGender = randomChooseMaleFemale()
     return (
         <MainLayout nextPage={"/choiceCity"} prevPage={"/"}>
             <Parent>
                 <Header>
-                    В каком ты классе?
+                    {randomGender}
                 </Header>
                 <BodyContent>
-                    {dataClass.map(({text, id}) => (
+                    Поиск
+                </BodyContent>
+                <BodyContent>
+                    {dataClass.map(({ text, id }) => (
                         <OneClass key={id}>
                             <Text>
                                 {text}
                             </Text>
                             <ButtonSelect onClick={() => setActiveClass(id)} activeColor={activeClass === id}>
-                                {activeClass === id ? <TickIcon/> : <CrossIcon/>}
+                                {activeClass === id ? <TickIcon /> : <CrossIcon />}
                             </ButtonSelect>
                         </OneClass>
                     ))}
@@ -100,7 +108,7 @@ const Text = st.div`
 `;
 
 const ButtonSelect = st.div`
-    background: ${({activeColor}) => activeColor ? "#05B2DC" : "#F15BB5"};
+    background: ${({ activeColor }) => activeColor ? "#05B2DC" : "#F15BB5"};
     cursor: pointer;
     padding: 6px 18px;
     border-radius: 4px;
