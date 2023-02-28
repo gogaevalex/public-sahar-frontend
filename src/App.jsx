@@ -13,12 +13,18 @@ import {ChoiceGender} from "./pages/ChoiceGender";
 import {ChoicePromo} from "./pages/ChoicePromo";
 import {InfoBotPage} from "./pages/InfoBotPage";
 import {NewsLinePage} from "./pages/NewsLinePage";
+import { RulesUser } from "./pages/RulesUser";
+import { Questions } from "./pages/Questions";
+import { PostGame } from "./pages/PostGame";
+import { PayAdd } from "./pages/PayAdd";
+import { Shop } from "./pages/Shop";
+import { ShopCrushOption } from './pages/ShopCrushOption';
 
 
 
 
 function App() {
-    const {onToggleButton, tg} = useTelegram();
+    const { onToggleButton, tg } = useTelegram();
 
     useEffect(() => {
         tg.ready();
@@ -38,6 +44,11 @@ function App() {
                 <Route path={'/choicePromo'} element={<ChoicePromo />}/>
                 <Route path={'/infoBot'} element={<InfoBotPage />}/>
                 <Route path={'/newsline'} element={<NewsLinePage />}/>
+                <Route path={'/questions'} element={<Questions />} />
+                <Route path={'/postgame'} element={<PostGame />} />
+                <Route path={'/payadd'} element={<PayAdd />} />
+                <Route path={'/shop'} element={<Shop />} />
+                <Route path={'/shopcrushoption'} element={<ShopCrushOption />} />
             </Routes>
         </div>
     );
