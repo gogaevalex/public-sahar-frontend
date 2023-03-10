@@ -131,8 +131,8 @@ const ButtonGetCoins = st.div`
     margin:auto;
     margin-top:20px;
     font-weight: 500;
-font-size: 20px;
-line-height: 23px;
+    font-size: 20px;
+    line-height: 23px;
     
 `;
 const ButtonInvite = st.div`
