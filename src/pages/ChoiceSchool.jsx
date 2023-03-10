@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import st from '@emotion/styled'
 import { MainLayout } from '../components/MainLayout';
 import SchoolPicture from '../pictures/SchoolPicture.png';
@@ -50,7 +51,8 @@ const shortText = (text) => {
 
 export const ChoiceSchool = () => {
     const [activeSchool, setActiveSchool] = useState(null);
-
+	const user = useSelector((state) => state.user);
+    console.log('user', user);
     return (
         <MainLayout nextPage={"/choiceName"} prevPage={"/choiceCity"}>
             <Parent>

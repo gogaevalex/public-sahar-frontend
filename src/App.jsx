@@ -13,7 +13,6 @@ import {ChoiceGender} from "./pages/ChoiceGender";
 import {ChoicePromo} from "./pages/ChoicePromo";
 import {InfoBotPage} from "./pages/InfoBotPage";
 import {NewsLinePage} from "./pages/NewsLinePage";
-import { RulesUser } from "./pages/RulesUser";
 import { Questions } from "./pages/Questions";
 import { PostGame } from "./pages/PostGame";
 import { PayAdd } from "./pages/PayAdd";
