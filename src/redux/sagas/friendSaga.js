@@ -3,18 +3,18 @@ import {
 } from 'redux-saga/effects';
 import {
 	PEOPLE_LIST,
-	getPeopleSuccess,
-	getPeopleError,
+	getPeopleListSuccess,
+	getPeopleListError,
 
-} from '../redux/actions';
+} from '../actions';
 import $api from '../../utils/api';
 
-function* getAllPeopleInSchool(data) {
+function* getAllPeopleInSchool() {
 	try {
-		const result = yield call((schoolId) => $api.get('/school/people/:schoolId'));
-		yield put(getPeopleSuccess(result.data));
+		const result = yield call((schoolId) => $api.get(`/school/people/${schoolId}`));
+		yield put(getPeopleListSuccess(result.data));
 	} catch (error) {
-		yield put(getPeopleError(error));
+		yield put(getPeopleListError(error));
 	}
 }
 

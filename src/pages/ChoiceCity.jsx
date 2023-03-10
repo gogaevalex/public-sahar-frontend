@@ -1,16 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import st from '@emotion/styled'
 import CityPicture from '../pictures/CityPicture.png';
 import { MainLayout } from '../components/MainLayout';
 import { Input } from '../components/Input';
+import {getAllCity, changeUserData} from '../redux/actions';
 
 export const ChoiceCity = () => {
     const [value, setValue] = useState("");
     const chageInput = (value) => {
         setValue(value.replace(/[^а-яё\s]/gi, ''));
     }
+    const dispatch = useDispatch();
+	const {isLoad, data} = useSelector((state) => state.city);
+    useEffect(() => {
+        dispatch(getAllCity())
+    }, []);
+    console.log(isLoad, data);
+
     return (
-        <MainLayout nextPage={"/choiceSchool"} prevPage={"/choiceClass"}>
+        <MainLayout
+            nextPage={"/choiceSchool"}
+            prevPage={"/choiceClass"}
+            clickMainButton={() => {
+                dispatch(changeUserData({cityId: 1, city: "Москва"}))
+            }}
+        >
             <Parent>
                 <Header>
                     Твой город

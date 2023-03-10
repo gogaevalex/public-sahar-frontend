@@ -1,6 +1,6 @@
-export const PEOPLE_LIST = `PEOPLE_LIST`;
-export const PEOPLE_LIST_SUCCESS = `PEOPLE_LIST_SUCCESS`;
-export const PEOPLE_LIST_ERROR = `PEOPLE_LIST_ERROR`;
+export const PEOPLE_LIST = 'PEOPLE_LIST';
+export const PEOPLE_LIST_SUCCESS = 'PEOPLE_LIST_SUCCESS';
+export const PEOPLE_LIST_ERROR = 'PEOPLE_LIST_ERROR';
 
 export const getPeopleList = (params) => ({
 	type: PEOPLE_LIST,
