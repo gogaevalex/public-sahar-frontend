@@ -3,6 +3,8 @@ import st from '@emotion/styled'
 import { MainLayout } from '../components/MainLayout';
 import { CrossIcon } from '../icons/CrossIcon';
 import { TickIcon } from '../icons/TickIcon';
+import {getPeopleList} from '../redux/actions';
+
 
 const dataFriend = [
     {
@@ -33,7 +35,12 @@ const dataFriend = [
 
 export const ChoiceFriend = () => {
     const [listFriend, setListFriend] = useState([]);
-    const peopleList = $api.get('/school/people/:id');
+    const dispatch = useDispatch();
+	const {id: mongoTeacherId} = useSelector((state) => state.teacher);
+    useEffect(() => {
+        dispatch(getPeopleList(schoolId))
+    }, []);
+
     const changeFriendList = (event, id) => {
         event.preventDefault();
         setListFriend((currentList) => {
