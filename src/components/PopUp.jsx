@@ -30,13 +30,15 @@ const ParentOverlay = st.div`
 `;
 
 const FocusedWindow = st.div`
-    margin-top:10%;
+    margin-top:20%;
     position: absolute;
     z-index:5;
     background: #FDFDFF;
     box-shadow: 0px 0px 200px rgba(0, 0, 0, 0.55);
     border-radius: 28px;
-    padding: 30px 15px;
+    padding: 30px 15px 10px 15px;
+    width: 80%;
+    left: 10%;
     
 `;
 

@@ -16,7 +16,7 @@ export const Shop = () => {
     const [openedSystemPush, setOpenedSystemPush] = useState(false)
     const delay = 4000
     const transitionTimePush = 500
-    const [openedPopUp, setOpenedPopUp] = useState(true) //стейт подтверждения об оплате
+    const [openedPopUp, setOpenedPopUp] = useState(false) //стейт подтверждения об оплате
     return (
 
         <Parent>
@@ -144,6 +144,7 @@ const ButtonInvite = st.div`
     line-height: 23px;
     overflow:visible;
     height:40px;
+    margin-bottom:10px;
     
 `;
 const YourBalance = st.div`

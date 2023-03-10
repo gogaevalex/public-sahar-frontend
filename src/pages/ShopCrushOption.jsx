@@ -94,6 +94,21 @@ export const ShopCrushOption = () => {
     const [activeClass, setActiveClass] = useState(null);
     const [value, setValue] = useState("");
 
+    console.log(value.toLowerCase())
+
+
+    //create a new array by filtering the original array
+    const filteredData = dataClass.filter((el) => {
+        //if no input the return the original
+        if (value === '') {
+            return el;
+        }
+        //return the item which contains the user input
+        else {
+            const str = el.name + " " + el.surname;
+            return str.toLowerCase().includes(value)
+        }
+    })
     return (
 
 
@@ -107,11 +122,12 @@ export const ShopCrushOption = () => {
                     <TopText>Выбери друга у которого хочешь появиться в опросе</TopText>
 
                 </Header>
+                {/*со следующим обновлением будет добавлен поиск по друзьям*/}
                 <SearchBar>
                     <Input value={value} onChange={setValue} placeholder="поиск..." />
                 </SearchBar>
                 <BodyContent>
-                    {dataClass.map(({ name, surname, id }) => (
+                    {filteredData.map(({ name, surname, id }) => (
                         <OneClass key={id}>
                             <Text>
                                 {name} {surname}
@@ -138,10 +154,13 @@ const Rounder = st.div`
 border-radius:16px;
 `;
 const Header = st.div`
+    position:relative;
     text-align: center;
     padding: 0 0 30px 0;
     background: #FF670E;
     padding:70px 20px 20px 20px;
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
 
 `;
 
@@ -156,10 +175,10 @@ height:40px;
 display: flex;
 justify-content: left;
 text-size:12px;
-padding:5px 20px;
+padding:0px 20px;
 `;
 const OneClass = st.div`
-    border-top: 1px solid;
+    border-bottom: 1px solid grey;
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
@@ -170,8 +189,6 @@ const TopText = st.div`
 font-weight: 500;
 font-size: 17px;
 line-height: 20px;
-/* or 118% */
-
 text-align: center;
 
 color: #FDFDFF;
