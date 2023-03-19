@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import st from '@emotion/styled'
+import { useNavigate } from 'react-router-dom';
 import { ExitIcon } from '../icons/ExitIcon';
 import { CoinIcon } from '../icons/CoinIcon';
 import ShhhEmoji from '../pictures/ShhhEmoji.png';
@@ -13,6 +14,7 @@ import { PopUp } from '../components/PopUp';
 const CurrentBalance = 59
 
 export const Shop = () => {
+    const navigate = useNavigate()
     const [openedSystemPush, setOpenedSystemPush] = useState(false)
     const delay = 4000
     const transitionTimePush = 500
@@ -27,9 +29,9 @@ export const Shop = () => {
                 transitionTimePush={transitionTimePush}
             >
 
-                <text>
+                <p>
                     твое имя было успешно✅ добавлено в 3 опроса!
-                </text>
+                </p>
 
 
             </SysPush>
@@ -54,7 +56,7 @@ export const Shop = () => {
 
 
             <WhiteSpace>
-                <ExitButton>
+                <ExitButton onClick={() => navigate('/profile')}>
                     <ExitIcon></ExitIcon>
                 </ExitButton>
                 <MainSpace>
@@ -72,10 +74,12 @@ export const Shop = () => {
                         <ButtonImage src={NewspaperGlasses} />
                         <ButtonText>Отправь свое имя в 3 рандомных опроса</ButtonText>
                         <ButtonPay onClick={() => {
-                            setOpenedSystemPush(true);
-                            setTimeout(() => {
-                                setOpenedSystemPush(false);
-                            }, delay);
+                            navigate('/shopcrushoption')
+
+                            /* setOpenedSystemPush(true);
+                             setTimeout(() => {
+                                 setOpenedSystemPush(false);
+                             }, delay);*/
                         }}>
                             <PayButtonText>
                                 100

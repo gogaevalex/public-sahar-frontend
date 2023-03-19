@@ -5,13 +5,13 @@ import { MainLayout } from '../components/MainLayout';
 
 export const InfoBotPage = () => {
     return (
-        <MainLayout nextPage={"/main"} prevPage={"/choicePromo"}>
+        <MainLayout nextPage={"/questions"} prevPage={"/choicePromo"}>
             <Parent>
                 <Header>
                     ЭТО САХАР-БОТ!
                 </Header>
                 <BlockImage>
-                    <img src={InfoBotPicture} alt="infoBotPicture"/>
+                    <img src={InfoBotPicture} alt="infoBotPicture" />
                     <LeftDesc>
                         отвечай на вопросы про друзей
                     </LeftDesc>

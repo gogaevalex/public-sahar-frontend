@@ -1,10 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import st from '@emotion/styled'
 import { ReshuffleIcon } from '../icons/ReshuffleIcon';
 import { SkipIcon } from '../icons/SkipIcon';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getQuestionList } from '../redux/actions';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 const currentUserId = 345252
-
 const userGender = "male" // пол юзера
 const noncePackage = 2 /* nonce - это уникальное число (как counter), 
 показывает сколько раз юзер играл, следовательно мы подбираем ему нужный Package с 
@@ -15,853 +18,697 @@ const isSchoolQuestion = "true"
 /*в бд есть вопросы для школьников и 
 вопросы для взрослых (университетские)*/
 
-const questionsForStudents = [
-    {
-
-        text: "Мы бы отлично смотрелись вместе ",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        questionId: 5,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкина ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-
-    {
-        text: "Будущий знаменитый дизайнер",
-        toWhomGender: "female",
-        imageLink: "https://i.ibb.co/B4vcRp8/image-84.png",
-        questionId: 8,
-        students: [
-            {
-
-                name: "Сарика Хяркина ",
-                wins: 6,
-                userId: 61,
-            },
-            {
-
-                name: "Магася Медова ",
-                wins: 2,
-                userId: 62,
-            },
-            {
-
-                name: "Симася Саловимич ",
-                wins: 0,
-                userId: 622,
-            },
-            {
-
-                name: "Опятька Понеделкина ",
-                wins: 3,
-                userId: 64,
-            },
-            {
-
-                name: "Сизимка Открывашкина ",
-                wins: 2,
-                userId: 65,
-            },
-            {
-
-                name: "Иванка Бояркина ",
-                wins: 0,
-                userId: 66,
-            },
-            {
-
-                name: "Дина Заврина ",
-                wins: 5,
-                userId: 67,
-            },
-            {
-
-                name: "Аля Ляля ",
-                wins: 0,
-                userId: 68,
-            }
-        ]
-    },
-    {
-        text: "Всегда держит свое слово",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        questionId: 14,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-    {
-        text: "Лучший друг из всех",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-        questionId: 15,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-    {
-        text: "Пожалуйста, брось своего парня  ",
-        toWhomGender: "female",
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        questionId: 9,
-        students: [
-            {
-
-                name: "Сарика Хяркина ",
-                wins: 6,
-                userId: 61,
-            },
-            {
-
-                name: "Магася Медова ",
-                wins: 2,
-                userId: 62,
-            },
-            {
-
-                name: "Симася Саловимич ",
-                wins: 0,
-                userId: 622,
-            },
-            {
-
-                name: "Опятька Понеделкина ",
-                wins: 3,
-                userId: 64,
-            },
-            {
-
-                name: "Сизимка Открывашкина ",
-                wins: 2,
-                userId: 65,
-            },
-            {
-
-                name: "Иванка Бояркина ",
-                wins: 0,
-                userId: 66,
-            },
-            {
-
-                name: "Дина Заврина ",
-                wins: 5,
-                userId: 67,
-            },
-            {
-
-                name: "Аля Ляля ",
-                wins: 0,
-                userId: 68,
-            }]
-    },
-    {
-        text: "Не догадывается, насколько она потрясающая",
-        toWhomGender: "female",
-        imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-        questionId: 10,
-        students: [
-            {
-
-                name: "Сарика Хяркина ",
-                wins: 6,
-                userId: 61,
-            },
-            {
-
-                name: "Магася Медова ",
-                wins: 2,
-                userId: 62,
-            },
-            {
-
-                name: "Симася Саловимич ",
-                wins: 0,
-                userId: 622,
-            },
-            {
-
-                name: "Опятька Понеделкина ",
-                wins: 3,
-                userId: 64,
-            },
-            {
-
-                name: "Сизимка Открывашкина ",
-                wins: 2,
-                userId: 65,
-            },
-            {
-
-                name: "Иванка Бояркина ",
-                wins: 0,
-                userId: 66,
-            },
-            {
-
-                name: "Дина Заврина ",
-                wins: 5,
-                userId: 67,
-            },
-            {
-
-                name: "Аля Ляля ",
-                wins: 0,
-                userId: 68,
-            }]
-    },
-    {
-
-        text: "Всегда прикроет меня в любой ситуации",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        questionId: 11,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-    {
-        text: "Всегда в курсе всех событий ",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-        questionId: 12,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-    {
-        text: "Будущий Илон Маск ",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/B4vcRp8/image-84.png",
-        questionId: 13,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    },
-    {
-        text: "Мисс популярность",
-        toWhomGender: "female",
-        imageLink: "https://i.ibb.co/KrvWTcD/image-79-1.png",
-        questionId: 6,
-        students: [
-            {
-
-                name: "Сарика Хяркина ",
-                wins: 6,
-                userId: 61,
-            },
-            {
-
-                name: "Магася Медова ",
-                wins: 2,
-                userId: 62,
-            },
-            {
-
-                name: "Симася Саловимич ",
-                wins: 0,
-                userId: 622,
-            },
-            {
-
-                name: "Опятька Понеделкина ",
-                wins: 3,
-                userId: 64,
-            },
-            {
-
-                name: "Сизимка Открывашкина ",
-                wins: 2,
-                userId: 65,
-            },
-            {
-
-                name: "Иванка Бояркина ",
-                wins: 0,
-                userId: 66,
-            },
-            {
-
-                name: "Дина Заврина ",
-                wins: 5,
-                userId: 67,
-            },
-            {
-
-                name: "Аля Ляля ",
-                wins: 0,
-                userId: 68,
-            }]
-    },
-    {
-        text: "Ты даже не догадываешься, как тобой восхищаются ",
-        toWhomGender: "female",
-        imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-        questionId: 7,
-        students: [
-            {
-
-                name: "Сарика Хяркина ",
-                wins: 6,
-                userId: 61,
-            },
-            {
-
-                name: "Магася Медова ",
-                wins: 2,
-                userId: 62,
-            },
-            {
-
-                name: "Симася Саловимич ",
-                wins: 0,
-                userId: 622,
-            },
-            {
-
-                name: "Опятька Понеделкина ",
-                wins: 3,
-                userId: 64,
-            },
-            {
-
-                name: "Сизимка Открывашкина ",
-                wins: 2,
-                userId: 65,
-            },
-            {
-
-                name: "Иванка Бояркина ",
-                wins: 0,
-                userId: 66,
-            },
-            {
-
-                name: "Дина Заврина ",
-                wins: 5,
-                userId: 67,
-            },
-            {
-
-                name: "Аля Ляля ",
-                wins: 0,
-                userId: 68,
-            }]
-    },
-    {
-        text: "Лучший второй пилот ",
-        toWhomGender: "male",
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        questionId: 16,
-        students: [
-            {
-
-                name: "Иван Бояркин ",
-                wins: 3,
-                userId: 53,
-            },
-            {
-
-                name: "Диван Покрывалкин ",
-                wins: 0,
-                userId: 54,
-            },
-            {
-
-                name: "Сарик Хяркин ",
-                wins: 0,
-                userId: 55,
-            },
-            {
-
-                name: "Мага Медов ",
-                wins: 3,
-                userId: 56,
-            },
-            {
-
-                name: "Сим Саловим ",
-                wins: 4,
-                userId: 57,
-            },
-            {
-
-                name: "Опять Понеделкина ",
-                wins: 7,
-                userId: 58,
-            },
-            {
-
-                name: "Сизим Открывашкин ",
-                wins: 1,
-                userId: 59,
-            },
-            {
-
-                name: "Иваныч Иванов ",
-                wins: 0,
-                userId: 60,
-            }
-        ]
-    }
-]
-
-// const dataClassStudentsMale = [
-//     {
-
-//         name: "Иван Бояркин ",
-//         userId: 53,
-//     },
-//     {
-
-//         name: "Диван Покрывалкин ",
-//         userId: 54,
-//     },
-//     {
-
-//         name: "Сарик Хяркин ",
-//         userId: 55,
-//     },
-//     {
-
-//         name: "Мага Медов ",
-//         userId: 56,
-//     },
-//     {
-
-//         name: "Сим Саловим ",
-//         userId: 57,
-//     },
-//     {
-
-//         name: "Опять Понеделкина ",
-//         userId: 58,
-//     },
-//     {
-
-//         name: "Сизим Открывашкина ",
-//         userId: 59,
-//     },
-//     {
-
-//         name: "Иваныч Иванов ",
-//         userId: 60,
-//     }
-// ]
-
-// const dataClassStudentsFemale = [
-
-//     {
-
-//         name: "Сарика Хяркина ",
-//         userId: 61,
-//     },
-//     {
-
-//         name: "Магася Медова ",
-//         userId: 62,
-//     },
-//     {
-
-//         name: "Симася Саловимич ",
-//         userId: 622,
-//     },
-//     {
-
-//         name: "Опятька Понеделкина ",
-//         userId: 64,
-//     },
-//     {
-
-//         name: "Сизимка Открывашкина ",
-//         userId: 65,
-//     },
-//     {
-
-//         name: "Иванка Бояркина ",
-//         userId: 66,
-//     },
-//     {
-
-//         name: "Дина Заврина ",
-//         userId: 67,
-//     },
-//     {
-
-//         name: "Аля Ляля ",
-//         userId: 68,
-//     }
-// ]
-// // const dataAnswersRecorded = [
-
-// // ]
-// const questionStatistics = [
+// const questionsForStudents = [
 //     {
 
 //         text: "Мы бы отлично смотрелись вместе ",
-//         toWhomGender: "female",
+//         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-//         userId: 5,
+//         questionId: 5,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкина ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 
 //     {
 //         text: "Будущий знаменитый дизайнер",
 //         toWhomGender: "female",
 //         imageLink: "https://i.ibb.co/B4vcRp8/image-84.png",
-//         id: 8,
+//         questionId: 8,
+//         students: [
+//             {
+
+//                 name: "Сарика Хяркина ",
+//                 wins: 6,
+//                 userId: 61,
+//             },
+//             {
+
+//                 name: "Магася Медова ",
+//                 wins: 2,
+//                 userId: 62,
+//             },
+//             {
+
+//                 name: "Симася Саловимич ",
+//                 wins: 0,
+//                 userId: 622,
+//             },
+//             {
+
+//                 name: "Опятька Понеделкина ",
+//                 wins: 3,
+//                 userId: 64,
+//             },
+//             {
+
+//                 name: "Сизимка Открывашкина ",
+//                 wins: 2,
+//                 userId: 65,
+//             },
+//             {
+
+//                 name: "Иванка Бояркина ",
+//                 wins: 0,
+//                 userId: 66,
+//             },
+//             {
+
+//                 name: "Дина Заврина ",
+//                 wins: 5,
+//                 userId: 67,
+//             },
+//             {
+
+//                 name: "Аля Ляля ",
+//                 wins: 0,
+//                 userId: 68,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Всегда держит свое слово",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-//         id: 14,
+//         questionId: 14,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Лучший друг из всех",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-//         id: 15,
+//         questionId: 15,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Пожалуйста, брось своего парня  ",
 //         toWhomGender: "female",
 //         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-//         id: 9,
+//         questionId: 9,
+//         students: [
+//             {
+
+//                 name: "Сарика Хяркина ",
+//                 wins: 6,
+//                 userId: 61,
+//             },
+//             {
+
+//                 name: "Магася Медова ",
+//                 wins: 2,
+//                 userId: 62,
+//             },
+//             {
+
+//                 name: "Симася Саловимич ",
+//                 wins: 0,
+//                 userId: 622,
+//             },
+//             {
+
+//                 name: "Опятька Понеделкина ",
+//                 wins: 3,
+//                 userId: 64,
+//             },
+//             {
+
+//                 name: "Сизимка Открывашкина ",
+//                 wins: 2,
+//                 userId: 65,
+//             },
+//             {
+
+//                 name: "Иванка Бояркина ",
+//                 wins: 0,
+//                 userId: 66,
+//             },
+//             {
+
+//                 name: "Дина Заврина ",
+//                 wins: 5,
+//                 userId: 67,
+//             },
+//             {
+
+//                 name: "Аля Ляля ",
+//                 wins: 0,
+//                 userId: 68,
+//             }]
 //     },
 //     {
 //         text: "Не догадывается, насколько она потрясающая",
 //         toWhomGender: "female",
 //         imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-//         id: 10,
+//         questionId: 10,
+//         students: [
+//             {
+
+//                 name: "Сарика Хяркина ",
+//                 wins: 6,
+//                 userId: 61,
+//             },
+//             {
+
+//                 name: "Магася Медова ",
+//                 wins: 2,
+//                 userId: 62,
+//             },
+//             {
+
+//                 name: "Симася Саловимич ",
+//                 wins: 0,
+//                 userId: 622,
+//             },
+//             {
+
+//                 name: "Опятька Понеделкина ",
+//                 wins: 3,
+//                 userId: 64,
+//             },
+//             {
+
+//                 name: "Сизимка Открывашкина ",
+//                 wins: 2,
+//                 userId: 65,
+//             },
+//             {
+
+//                 name: "Иванка Бояркина ",
+//                 wins: 0,
+//                 userId: 66,
+//             },
+//             {
+
+//                 name: "Дина Заврина ",
+//                 wins: 5,
+//                 userId: 67,
+//             },
+//             {
+
+//                 name: "Аля Ляля ",
+//                 wins: 0,
+//                 userId: 68,
+//             }]
 //     },
 //     {
 
 //         text: "Всегда прикроет меня в любой ситуации",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-//         id: 11,
+//         questionId: 11,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Всегда в курсе всех событий ",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-//         id: 12,
+//         questionId: 12,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Будущий Илон Маск ",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/B4vcRp8/image-84.png",
-//         id: 13,
+//         questionId: 13,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     },
 //     {
 //         text: "Мисс популярность",
 //         toWhomGender: "female",
 //         imageLink: "https://i.ibb.co/KrvWTcD/image-79-1.png",
-//         id: 6,
+//         questionId: 6,
+//         students: [
+//             {
+
+//                 name: "Сарика Хяркина ",
+//                 wins: 6,
+//                 userId: 61,
+//             },
+//             {
+
+//                 name: "Магася Медова ",
+//                 wins: 2,
+//                 userId: 62,
+//             },
+//             {
+
+//                 name: "Симася Саловимич ",
+//                 wins: 0,
+//                 userId: 622,
+//             },
+//             {
+
+//                 name: "Опятька Понеделкина ",
+//                 wins: 3,
+//                 userId: 64,
+//             },
+//             {
+
+//                 name: "Сизимка Открывашкина ",
+//                 wins: 2,
+//                 userId: 65,
+//             },
+//             {
+
+//                 name: "Иванка Бояркина ",
+//                 wins: 0,
+//                 userId: 66,
+//             },
+//             {
+
+//                 name: "Дина Заврина ",
+//                 wins: 5,
+//                 userId: 67,
+//             },
+//             {
+
+//                 name: "Аля Ляля ",
+//                 wins: 0,
+//                 userId: 68,
+//             }]
 //     },
 //     {
 //         text: "Ты даже не догадываешься, как тобой восхищаются ",
 //         toWhomGender: "female",
 //         imageLink: "https://i.ibb.co/BBtPpyC/image-85.png",
-//         id: 7,
+//         questionId: 7,
+//         students: [
+//             {
+
+//                 name: "Сарика Хяркина ",
+//                 wins: 6,
+//                 userId: 61,
+//             },
+//             {
+
+//                 name: "Магася Медова ",
+//                 wins: 2,
+//                 userId: 62,
+//             },
+//             {
+
+//                 name: "Симася Саловимич ",
+//                 wins: 0,
+//                 userId: 622,
+//             },
+//             {
+
+//                 name: "Опятька Понеделкина ",
+//                 wins: 3,
+//                 userId: 64,
+//             },
+//             {
+
+//                 name: "Сизимка Открывашкина ",
+//                 wins: 2,
+//                 userId: 65,
+//             },
+//             {
+
+//                 name: "Иванка Бояркина ",
+//                 wins: 0,
+//                 userId: 66,
+//             },
+//             {
+
+//                 name: "Дина Заврина ",
+//                 wins: 5,
+//                 userId: 67,
+//             },
+//             {
+
+//                 name: "Аля Ляля ",
+//                 wins: 0,
+//                 userId: 68,
+//             }]
 //     },
 //     {
 //         text: "Лучший второй пилот ",
 //         toWhomGender: "male",
 //         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-//         id: 16,
+//         questionId: 16,
+//         students: [
+//             {
+
+//                 name: "Иван Бояркин ",
+//                 wins: 3,
+//                 userId: 53,
+//             },
+//             {
+
+//                 name: "Диван Покрывалкин ",
+//                 wins: 0,
+//                 userId: 54,
+//             },
+//             {
+
+//                 name: "Сарик Хяркин ",
+//                 wins: 0,
+//                 userId: 55,
+//             },
+//             {
+
+//                 name: "Мага Медов ",
+//                 wins: 3,
+//                 userId: 56,
+//             },
+//             {
+
+//                 name: "Сим Саловим ",
+//                 wins: 4,
+//                 userId: 57,
+//             },
+//             {
+
+//                 name: "Опять Понеделкина ",
+//                 wins: 7,
+//                 userId: 58,
+//             },
+//             {
+
+//                 name: "Сизим Открывашкин ",
+//                 wins: 1,
+//                 userId: 59,
+//             },
+//             {
+
+//                 name: "Иваныч Иванов ",
+//                 wins: 0,
+//                 userId: 60,
+//             }
+//         ]
 //     }
 // ]
 
-const widthOfStatLoaderFunc = ({ justAnswered, userId, wins }) => {
-    const isAddOne = justAnswered === userId ? 1 : 0
-    return Math.min((1 + wins + isAddOne) * 10, 80)
-}
 
 export const Questions = () => {
+
+    const dispatch = useDispatch()
+    const { isLoad: isLoading, data: questionsForStudents } = useSelector((state) => state.question);
+    const widthOfStatLoaderFunc = ({ justAnswered, userId, wins }) => {
+        const isAddOne = justAnswered === userId ? 1 : 0
+        return Math.min((1 + wins + isAddOne) * 10, 80)
+    }
+
+    useEffect(() => {
+        dispatch(getQuestionList())
+
+    }, [])
+    // console.log(questions)//баг
+
+    const navigate = useNavigate()
     const [totalQuestions, setTotalQuestions] = useState(12);
     const [questionsLeft, setQuestionsLeft] = useState(11);
     const [questionNumberN, setQuestionNumberN] = useState(1);
@@ -870,101 +717,107 @@ export const Questions = () => {
     const [dataAnswersRecorded, setDataAnswersRecorded] = useState([])
     /*вопросы мальчик/девочка чередуются рандомно (приходят рандомно с бэка), стейт наверху
     показывают сколько вопросов осталось*/
-    const currentQuestionGender = questionsForStudents[questionsLeft].toWhomGender;
-    //хранит пол (о ком задается текущий вопрос)
-    const dataClasssStudentsRandom = questionsForStudents[questionsLeft].students
-    const dataClassStudentsFirst = dataClasssStudentsRandom.slice(0, 4)//берем 4-х студентов 
-    const dataClassStudentsSecond = dataClasssStudentsRandom.slice(4, 8)/*берем других 4-х студентов, 
-    если предыдущие не понравились юзеру*/
-    const dataClassStudents = isReshuffled === "true" ? dataClassStudentsSecond : dataClassStudentsFirst
-    const widthOfLoader = Math.ceil((totalQuestions - questionsLeft) * (100 / totalQuestions));
+
     const [widthOfStatLoader, setWidthOfStatLoader] = useState(0)
-    const coinsEarned = questionsLeft === 0 ? Math.round(Math.random() * totalQuestions * 2) + totalQuestions : 0
 
+    if (!isLoading && questionsForStudents) {
 
+        const currentQuestionGender = questionsForStudents[questionsLeft].toWhomGender;
+        //хранит пол (о ком задается текущий вопрос)
+        const dataClasssStudentsRandom = questionsForStudents[questionsLeft].students
+        const dataClassStudentsFirst = dataClasssStudentsRandom.slice(0, 4)//берем 4-х студентов 
+        const dataClassStudentsSecond = dataClasssStudentsRandom.slice(4, 8)/*берем других 4-х студентов, 
+        если предыдущие не понравились юзеру*/
+        const dataClassStudents = isReshuffled === "true" ? dataClassStudentsSecond : dataClassStudentsFirst
+        const widthOfLoader = Math.ceil((totalQuestions - questionsLeft) * (100 / totalQuestions));
 
-    return (
-        <Background currentQuestionGender={currentQuestionGender}>
-            {justAnswered ? (
-                <ContinueOverlay
-                    onClick={() => {
-                        setQuestionsLeft(questionsLeft - 1);
-                        setQuestionNumberN(questionNumberN + 1);
-                        setJustAnswered(null);
-                        setIsReshuffled("false");
-                    }}>
-                </ContinueOverlay>
-            ) : <Empty />
-            }
-            <Parent>
+        const coinsEarned = questionsLeft === 0 ? Math.round(Math.random() * totalQuestions * 2) + totalQuestions : 0
+        console.log("real_data_before", questionsForStudents)
+        return (
+            <Background currentQuestionGender={currentQuestionGender}>
+                {justAnswered ? (
+                    <ContinueOverlay
+                        onClick={() => {
+                            setQuestionsLeft(questionsLeft - 1);
+                            setQuestionNumberN(questionNumberN + 1);
+                            setJustAnswered(null);
+                            setIsReshuffled("false");
+                            questionsLeft === 0 && navigate('/postgame')
+                        }}>
+                    </ContinueOverlay>
+                ) : <Empty />
+                }
+                <Parent>
 
-                <QuestionCounterSpace>
-                    <QuestionCounterText>{12 - questionsLeft} из 12</QuestionCounterText>
-                    <QuestionCounterBar>
-                        <QuestionCounterLoader widthOfLoader={widthOfLoader}></QuestionCounterLoader>
-                    </QuestionCounterBar>
-                </QuestionCounterSpace>
-                <TheQuestionSpace >
-                    <TheQuestionImageSpace>
-                        <TheQuestionImage src={questionsForStudents[questionsLeft].imageLink} />
-                    </TheQuestionImageSpace>
-                    <TheQuestionText >
-                        {questionsForStudents[questionsLeft].text}
-                    </TheQuestionText>
-                </TheQuestionSpace>
-                <NameChoice>
-                    {dataClassStudents.map(({ name, userId, wins }) => (
-                        <ButtonName key={userId}
-                            widthOfStatLoader={widthOfStatLoader}
-                            questionData={questionsForStudents[questionsLeft]}
-                            onClick={() => {
-                                setJustAnswered(userId);
-                                setDataAnswersRecorded([...dataAnswersRecorded, { aboutUserId: userId, questionId: questionsForStudents[questionsLeft].questionId }]);
+                    <QuestionCounterSpace>
+                        <QuestionCounterText>{12 - questionsLeft} из 12</QuestionCounterText>
+                        <QuestionCounterBar>
+                            <QuestionCounterLoader widthOfLoader={widthOfLoader}></QuestionCounterLoader>
+                        </QuestionCounterBar>
+                    </QuestionCounterSpace>
+                    <TheQuestionSpace >
+                        <TheQuestionImageSpace>
+                            <TheQuestionImage src={questionsForStudents[questionsLeft].imageLink} />
+                        </TheQuestionImageSpace>
+                        <TheQuestionText >
+                            {questionsForStudents[questionsLeft].text}
+                        </TheQuestionText>
+                    </TheQuestionSpace>
+                    <NameChoice>
+                        {dataClassStudents.map(({ name, userId, wins }) => (
+                            <ButtonName key={userId}
+                                widthOfStatLoader={widthOfStatLoader}
+                                questionData={questionsForStudents[questionsLeft]}
+                                onClick={() => {
+                                    setJustAnswered(userId);
+                                    setDataAnswersRecorded([...dataAnswersRecorded, { aboutUserId: userId, questionId: questionsForStudents[questionsLeft].questionId }]);
 
-                            }}
-                            activeColor={justAnswered === userId}
-                            notYetClicked={!justAnswered}
-                        >
-                            <StatisticsLoader
-                                wins={dataClassStudents.wins}
-                                widthOfStatLoader={widthOfStatLoaderFunc({ justAnswered, userId, wins })}
+                                }}
+                                activeColor={justAnswered === userId}
                                 notYetClicked={!justAnswered}
                             >
-                            </StatisticsLoader>
-                            <Text>
-                                {name}
-                            </Text>
-                        </ButtonName>
-                    ))}
-                </NameChoice>
-                {justAnswered ? (
-                    <ContinueButtonSpace>
-                        <ContinueButton>
-                            тыкни где-то чтобы продолжить</ContinueButton>
-                    </ContinueButtonSpace>
-                ) : <QuestionManipulationSpace>
-                    <TransparentButton
-                        isReshuffled={isReshuffled}
-                        style={{
-                            opacity: isReshuffled === "true" ? "50%" : "100%",
-                            pointerEvents: isReshuffled === "true" ? "none" : "all"
-                        }}
-                        onClick={() => setIsReshuffled("true")}>
-                        <ReshuffleIcon />сменить имена
-                    </TransparentButton>
-                    <TransparentButton onClick={() => {
-                        setTotalQuestions(totalQuestions - 1);
-                        setQuestionsLeft(questionsLeft - 1);
-                        setIsReshuffled("false");
-                    }}>
-                        <SkipIcon />пропустить
-                    </TransparentButton>
-                </QuestionManipulationSpace>
-                }
-            </Parent>
-        </Background >
+                                <StatisticsLoader
+                                    wins={dataClassStudents.wins}
+                                    widthOfStatLoader={widthOfStatLoaderFunc({ justAnswered, userId, wins })}
+                                    notYetClicked={!justAnswered}
+                                >
+                                </StatisticsLoader>
+                                <Text>
+                                    {name}
+                                </Text>
+                            </ButtonName>
+                        ))}
+                    </NameChoice>
+                    {justAnswered ? (
+                        <ContinueButtonSpace>
+                            <ContinueButton>
+                                тыкни где-то чтобы продолжить</ContinueButton>
+                        </ContinueButtonSpace>
+                    ) : <QuestionManipulationSpace>
+                        <TransparentButton
+                            isReshuffled={isReshuffled}
+                            style={{
+                                opacity: isReshuffled === "true" ? "50%" : "100%",
+                                pointerEvents: isReshuffled === "true" ? "none" : "all"
+                            }}
+                            onClick={() => setIsReshuffled("true")}>
+                            <ReshuffleIcon />сменить имена
+                        </TransparentButton>
+                        <TransparentButton onClick={() => {
+                            setTotalQuestions(totalQuestions - 1);
+                            setQuestionsLeft(questionsLeft - 1);
+                            setIsReshuffled("false");
+                        }}>
+                            <SkipIcon />пропустить
+                        </TransparentButton>
+                    </QuestionManipulationSpace>
+                    }
+                </Parent>
+            </Background >
 
-    )
+        )
+    } else
+        return <LoadingScreen />
 }
 
 const Parent = st.div`

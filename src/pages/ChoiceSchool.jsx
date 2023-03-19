@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSchoolList } from '../redux/actions';
 import st from '@emotion/styled'
 import { MainLayout } from '../components/MainLayout';
 import SchoolPicture from '../pictures/SchoolPicture.png';
+import { Input } from '../components/Input';
+import { InputtedText } from '../components/InputtedText';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 const dataClass = [
     {
@@ -43,44 +47,80 @@ const dataClass = [
     },
 ]
 
-const shortText = (text) => {
-    if (text.length > 25) {
-        return `${text.slice(0, 25)}...`;
-    } else return text;
-}
+// const shortText = (text) => {
+//     if (text.length > 25) {
+//         return `${text.slice(0, 25)}...`;
+//     } else return text;
+// }
+
 
 export const ChoiceSchool = () => {
+    const [value, setValue] = useState("");
+    const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        dispatch(getSchoolList())
+
+    }, [])
     const [activeSchool, setActiveSchool] = useState(null);
-	const user = useSelector((state) => state.user);
-    console.log('user', user);
-    return (
-        <MainLayout nextPage={"/choiceName"} prevPage={"/choiceCity"}>
-            <Parent>
-                <Header>
-                    Выбери свою школу
-                </Header>
-                <BodyContent>
-                    {dataClass.map(({title, city, countStudent, id}) => (
-                        <OneClass key={id} onClick={() => setActiveSchool(id)} activeColor={activeSchool === id}>
-                            <LeftBlock>
-                                <Image src={SchoolPicture} alt="schoolPicture"/>
-                                <Description>
-                                    <Title>{shortText(title)}</Title>
-                                    <City>{shortText(city)}</City>
-                                </Description>
-                            </LeftBlock>
-                            <CountBlock>
-                                <CountNumber>
-                                    {countStudent} 
-                                </CountNumber>
-                                ЧЕЛ.
-                            </CountBlock>
-                        </OneClass>
-                    ))}
-                </BodyContent>
-            </Parent>
-        </MainLayout>
-    )
+
+    const { isLoad: isLoading, data: schools } = useSelector((state) => state.school);//сюда надо перекинуть инфу об общем балансе юзера
+
+    console.log("школы", schools)
+    console.log("Load", isLoading)
+
+    // const filteredDataClass = schools.filter((el) => {
+    //     if (value === '') {
+    //         return el;
+    //     }
+    //     else {
+    //         const str = el.title;
+    //         return str.toLowerCase().includes(value)
+    //     }
+    // })
+
+    console.log('schools', schools);
+    if (!isLoading && schools) {
+        return (
+
+            <MainLayout nextPage={"/choiceName"} prevPage={"/choiceCity"}>
+                <Parent>
+
+                    <Header>
+                        Выбери свою школу
+                    </Header>
+                    <BodyContent>
+                        <SearchBar>
+                            <Input value={value} onChange={setValue} placeholder="поиск по школам..." fontSize={20} />
+                        </SearchBar>
+                        {schools.map(({ title, city, countStudent = 0, id }) => (
+                            <OneClass key={id} onClick={() => setActiveSchool(id)} activeColor={activeSchool === id}>
+                                <LeftBlock>
+                                    <Image src={SchoolPicture} alt="schoolPicture" />
+                                    <Description>
+                                        <Title>{title}</Title>
+                                        <City>{city}</City>
+                                    </Description>
+                                </LeftBlock>
+                                <CountBlock>
+                                    <CountNumber>
+                                        {countStudent}
+                                    </CountNumber>
+                                    ЧЕЛ.
+                                </CountBlock>
+                            </OneClass>
+                        ))}
+                    </BodyContent>
+                </Parent>
+            </MainLayout>
+        )
+    } else {
+        return (
+            <LoadingScreen />
+        )
+
+    }
 }
 
 const Parent = st.div`
@@ -104,9 +144,15 @@ const BodyContent = st.div`
     width: 100%;
     overflow: auto;
 `;
-
+const SearchBar = st.div`
+    height:40px;
+    display: flex;
+    justify-content: left;
+    text-size:12px;
+    padding:0px 25px;
+`;
 const OneClass = st.div`
-    background: ${({activeColor}) => activeColor ? "#9B5DE559" : "none"};
+    background: ${({ activeColor }) => activeColor ? "#9B5DE559" : "none"};
     display: flex;
     justify-content: space-between;
     padding: 8px 24px;

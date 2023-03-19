@@ -7,7 +7,7 @@ import FirstLetter from '../pictures/FirstLetter.png';
 import CrystalBallPush from '../pictures/CrystalBallPush.png';
 import CoolGlasses from '../pictures/CoolGlasses.png';
 import CoinsX2 from '../pictures/CoinsX2.png';
-
+import { useNavigate } from 'react-router-dom';
 
 const dataClass = [
     {
@@ -40,17 +40,8 @@ const dataClass = [
 ]
 
 
-
-// function preloadImage(src) {
-//     const image = new Image();
-//     image.src = src;
-//     return function PreloadedImage(props) {
-//         return <img {...props} src={src} />;
-//     };
-// }
-
-
 export const PayAdd = () => {
+    const navigate = useNavigate()
     const [translate, setTranslate] = useState(0)
     const [advertNumber, setAdvertNumber] = useState(0)
 
@@ -118,7 +109,7 @@ export const PayAdd = () => {
                     </Text>
                     <ButtonPay>ОПЛАТИТЬ</ButtonPay>
 
-                    <ButtonNotNow>не сейчас</ButtonNotNow>
+                    <ButtonNotNow onClick={() => navigate(-1)}>не сейчас</ButtonNotNow>
 
 
 
@@ -141,9 +132,11 @@ padding: auto;
 const TermsSpace = st.div`
 
 background: #494949;
-border-radius: 16px;
+border-top-right-radius: 16px;
+border-top-left-radius: 16px;
 padding:15px 5px 15px 5px;
 width:100%;
+height:100vh;
 `;
 const TransparentButtonLeft = st.div`
 position:absolute;

@@ -6,15 +6,23 @@ import CoinsStacked from '../pictures/CoinsStacked.png';
 import CashTounge from '../pictures/CashTounge.png';
 import Padlock from '../pictures/Padlock.png';
 import Tickets from '../pictures/Tickets.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBalance } from '../redux/actions';
+import { getEarnedCoins } from '../redux/actions';
 
 
 export const PostGame = () => {
     const [isCollected, setIsCollected] = useState(false);
     const [isInviteClicked, setIsInviteClicked] = useState(false);
     const [openedPopUp, setOpenedPopUp] = useState(false)
-    const earnedCoins = 17 //сюда надо перекинуть инфу о заработаных монетах из Questions
-    const earnedBalance = 70 //сюда надо перекинуть инфу об общем балансе юзера
+    const dispatch = useDispatch()
+    const earnedCoins = useSelector((state) => state.earnedCoins.data);//сюда надо перекинуть инфу о заработаных монетах из Questions
+    const earnedBalance = useSelector((state) => state.balance.data);//сюда надо перекинуть инфу об общем балансе юзера
+    useEffect(() => {
+        dispatch(getBalance())
+        dispatch(getEarnedCoins())
 
+    }, [])
     return (
 
         <Parent>

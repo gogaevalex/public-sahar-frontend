@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import st from '@emotion/styled'
 import { TgIcon } from '../icons/TgIcon';
 import { KeyIcon } from '../icons/KeyIcon';
 import { WhiteExitIcon } from '../icons/WhiteExitIcon';
 import Boy from '../pictures/Boy.png';
 import Girl from '../pictures/Girl.png';
+import GuyInTheHole from '../pictures/GuyInTheHole.png';
+import { useLocation } from 'react-router';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPremiumStatus } from '../redux/actions';
+import { useNavigate } from 'react-router-dom';
 
 
 const questionData = [
@@ -86,19 +92,62 @@ const questionData = [
         ]
     }
 ]
+
+// const isPremium = false
+// const paidRevealNamesLeft = 2
 const chosenComplimentNumber = 1
+const firstLetter = "В"
 const currentQuestionGender = questionData[chosenComplimentNumber].fromWhomGender
-console.log(currentQuestionGender)
+
 export const NewComplimentsDetails = () => {
+    const dispatch = useDispatch()
+    const isPremium = true //useSelector((state) => state.premiumStatus.data.isPremium);//сюда надо перекинуть инфу о заработаных монетах из Questions
+    const paidRevealNamesLeft = 2 //useSelector((state) => state.premiumStatus.data.paidRevealNamesLeft);
+    const userBehindPremium = true
+    const isRevealed = false
+    useEffect(() => {
+        dispatch(getPremiumStatus())
+    }, [])
 
+    const location = useLocation()
+    const params = useParams()
+    const navigate = useNavigate()
+    console.log("status", isPremium)
+    console.log(location)
 
+    const [paidPopVisible, setPaidPopVisible] = useState(false)
+    console.log("paid: " + paidPopVisible)
+    console.log("isPremium: " + isPremium)
     return (
-
-
         <Background currentQuestionGender={currentQuestionGender}>
-
             <Parent>
-                <ExitButton><WhiteExitIcon /></ExitButton>
+                {paidPopVisible && (<><BlurOverlay onClick={() => setPaidPopVisible(false)} />
+                    <WhiteOverflow>
+                        <WhiteWrapper>
+                            <CentralImage src={GuyInTheHole} />
+                            <TextPaidTop>первая буква имени</TextPaidTop>
+                            <TextBigLetter>{firstLetter}</TextBigLetter>
+                            <ButtonPaid onClick={() => {
+                                if (paidRevealNamesLeft < 0) {
+                                    console.log('animate red')
+                                } else {
+                                    if (userBehindPremium) {
+                                        console.log('show block')
+                                    } else {
+                                        console.log('reveal the name')
+                                    }
+
+
+
+                                }
+                            }
+                            } ><KeyIcon />&nbsp; раскрыть полное имя</ButtonPaid>
+                            <TextPaidDescription>осталось раскрытий имени: {paidRevealNamesLeft}</TextPaidDescription>
+
+                        </WhiteWrapper>
+                    </WhiteOverflow></>)
+                }
+                <ExitButton onClick={() => navigate('/newcompliments')}><WhiteExitIcon /></ExitButton>
                 <TopText>
                     {currentQuestionGender == 'male' ? <MiniPic src={Boy} /> : <MiniPic src={Girl} />}
                     от  {currentQuestionGender == 'male' ? "мальчика" : "девочки"} из {questionData[chosenComplimentNumber].fromClass} класса
@@ -128,7 +177,9 @@ export const NewComplimentsDetails = () => {
                 <AdText>
                     <TgIcon /><Text>@caxapok_bot</Text>
                 </AdText>
-                <ButtonInvite><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite>
+                <ButtonInvite onClick={() =>
+                    isPremium ? setPaidPopVisible(true) : navigate('/payadd')//переход на рекламу (надо чтобы можно было вернуться назад)
+                }><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite>
             </Parent>
         </Background >
 
@@ -143,6 +194,86 @@ const Parent = st.div`
         padding: 30px
         background: blue;   
     `;
+const BlurOverlay = st.div`
+
+width:100%;
+top:0;
+bottom:0;
+right:0;
+background: rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(15px);
+position: fixed;
+z-index:9;
+cursor: pointer;
+`;
+
+const WhiteWrapper = st.div`
+    transform: translateY(-15%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height:115%;
+    padding-bottom:13px;
+    `;
+const WhiteOverflow = st.div`
+    
+    width:100%;
+    position:fixed;
+    bottom: 0;
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
+    background: #FDFDFF;
+    z-index:10;
+    padding:10px;
+    `;
+const TextPaidTop = st.text`
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    align-items: center;
+    text-align: center;
+    color: #0F1217;
+    `;
+
+const TextBigLetter = st.text`
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 50px;
+    align-items: center;
+    text-align: center;
+    color: #FF670E;
+    margin:5px;
+    `;
+const TextPaidDescription = st.text`
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 23px;
+    text-align: center;
+    color: #7A787A;
+    margin-top: 5px;
+    `;
+
+const ButtonPaid = st.div`
+        cursor: pointer;
+        padding: 6px 18px;
+        border-radius:30px;
+        background: #FF670E;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #FDFDFF;
+        width: 90%;
+        justify-content: center;
+       
+    `;
+const CentralImage = st.img`
+    width: 100px;
+    `;
+
 
 const TheQuestionSpace = st.div`
     text-align: center;

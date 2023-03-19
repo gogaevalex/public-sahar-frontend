@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import st from '@emotion/styled'
 
 import { TwoBigCoins } from '../icons/TwoBigCoins';
-
+import { useNavigate } from 'react-router-dom';
 import CrystalBallSmall from '../pictures/CrystalBallSmall.png';
 import GradHat from '../pictures/GradHat.png';
 import SchoolGrey from '../pictures/SchoolGrey.png';
@@ -123,8 +123,8 @@ const dataClassBlocked = [
 
     }
 ]
-console.log(dataClassProfile)
 export const Profile = () => {
+    const navigate = useNavigate()
     const [activeClass, setActiveClass] = useState([]);
     const baseListSize = 5
     const listIncreaseStep = 10
@@ -159,11 +159,8 @@ export const Profile = () => {
                     <BioLines>
                         <GreyText><SmallerPicsSug src={GreySugar} />сахарки <BlackText>{dataClassProfile.SugarNumber}</BlackText></GreyText>
                     </BioLines>
-
                 </BioSpace>
                 <BodyContent>
-
-
                     <TopText>
                         монеты
                     </TopText>
@@ -172,7 +169,7 @@ export const Profile = () => {
                 </BodyContent>
                 <BioLines>
                     <BigText><TwoBigCoins /> {dataClassProfile.coinsEarned}</BigText>
-                    <ButtonShop>магазин</ButtonShop>
+                    <ButtonShop onClick={() => navigate('/shop')}>магазин</ButtonShop>
                 </BioLines>
 
                 <BodyContent>
