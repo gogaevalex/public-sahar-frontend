@@ -53,12 +53,11 @@ function App() {
                 <Route path={'/shop'} element={<Shop />} />
                 <Route path={'/shopcrushoption'} element={<ShopCrushOption />} />
                 <Route path={'/newcompliments'} element={<NewCompliments />} />
-                <Route path={'/newcomplimentsdetails'} element={<NewComplimentsDetails />} />
+                <Route path={'/newcomplimentsdetails/:id'} element={<NewComplimentsDetails />} />
                 <Route path={'/people'} element={<People />} />
                 <Route path={'/profile'} element={<Profile />} />
                 <Route path={'/feed'} element={<Feed />} />
                 <Route path={'/authvk'} element={<AuthVK />} />
-
 
             </Routes>
         </div>

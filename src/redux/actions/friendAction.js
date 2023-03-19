@@ -16,3 +16,24 @@ export const getPeopleListError = (error) => ({
 	type: PEOPLE_LIST_ERROR,
 	error,
 });
+
+export const ADD_FRIEND = 'ADD_FRIEND';
+export const ADD_FRIEND_SUCCESS = 'ADD_FRIEND_SUCCESS';
+export const ADD_FRIEND_ERROR = 'ADD_FRIEND_ERROR';
+
+export const addFriend = (params) => ({
+	type: ADD_FRIEND,
+	params,
+});
+
+export const addFriendSuccess = (data) => ({
+	type: ADD_FRIEND_SUCCESS,
+	data,
+});
+
+export const addFriendError = (error) => ({
+	type: ADD_FRIEND_ERROR,
+	error,
+});
+
+

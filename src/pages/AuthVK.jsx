@@ -5,6 +5,7 @@ import { RegistrationVK } from '../components/RegistrationVK';
 
 
 
+
 export const AuthVK = () => {
     return (
 

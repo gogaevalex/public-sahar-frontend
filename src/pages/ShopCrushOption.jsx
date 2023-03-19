@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import st from '@emotion/styled'
-
+import { useNavigate } from 'react-router-dom';
 import { WhiteExitIcon } from '../icons/WhiteExitIcon';
 import { SelectActiveIcon } from '../icons/SelectActiveIcon';
 import { SelectInactiveIcon } from '../icons/SelectInactiveIcon';
@@ -91,12 +91,10 @@ const dataClass = [
 
 
 export const ShopCrushOption = () => {
+
     const [activeClass, setActiveClass] = useState(null);
     const [value, setValue] = useState("");
-
-    console.log(value.toLowerCase())
-
-
+    const navigate = useNavigate()
     //create a new array by filtering the original array
     const filteredData = dataClass.filter((el) => {
         //if no input the return the original
@@ -116,8 +114,8 @@ export const ShopCrushOption = () => {
             <Rounder>
                 <Header>
                     <ConfirmButton activeClass={activeClass}>Подтвердить</ConfirmButton>
-                    <ExitButton>
-                        <WhiteExitIcon></WhiteExitIcon>
+                    <ExitButton onClick={() => navigate('/shop')/*bug*/} >
+                        <WhiteExitIcon ></WhiteExitIcon>
                     </ExitButton>
                     <TopText>Выбери друга у которого хочешь появиться в опросе</TopText>
 
@@ -206,6 +204,7 @@ position:absolute;
 left: 20px;    
 top:20px;
 cursor: pointer;
+z-index:10;
 `;
 
 const ConfirmButton = st.div`

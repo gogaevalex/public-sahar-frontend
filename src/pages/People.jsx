@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import st from '@emotion/styled'
 import { Input } from '../components/Input';
+import { InputtedText } from '../components/InputtedText';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFriend } from '../redux/actions';
 
 const dataClassCommon = [
 
@@ -94,12 +97,10 @@ const dataClassSchool = [
 export const People = () => {
     const [activeClass, setActiveClass] = useState([]);
     const [value, setValue] = useState("");
-
-    console.log(activeClass)
-
-
-
-
+    const dispatch = useDispatch()
+    const { friend } = useSelector((state) => state.friend);
+    const { data: friendData, isLoad: isLoading } = friend
+    console.log("друг", friendData)
     const filteredDataCommon = dataClassCommon.filter((el) => {
         if (value === '') {
             return el;
@@ -133,19 +134,27 @@ export const People = () => {
         <Parent>
             <Rounder>
                 <SearchBar>
-                    <Input value={value} onChange={setValue} placeholder="поиск..." fontSize={18} />
+                    <Input value={value} onChange={setValue} placeholder="поиск..." fontSize={15} />
                 </SearchBar>
                 <BodyContent>
                     <TopText>друзья друзей</TopText>
-                    {filteredDataSchool.length ? (filteredDataCommon.map(({ name, surname, id }, index) => (
-                        index < showRowsCommon && (<OneClass key={id}>
-                            <Text>
-                                {name} {surname}
-                            </Text>
-                            <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
-                                {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
-                            </ButtonSelect>
-                        </OneClass>)
+                    {filteredDataSchool.length ? (filteredDataCommon.map(({ common, name, surname, id }, index) => (
+                        index < showRowsCommon && (
+                            <BorderWrapper key={id}>
+                                <OneClass >
+
+                                    <Text>
+                                        <InputtedText text={`${name} ${surname}`} maxNumberOfSymbols='10'></InputtedText>
+
+                                    </Text>
+
+                                    <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
+                                        {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
+                                    </ButtonSelect>
+
+                                </OneClass>
+                                <GreyText>общих друзей: {common}</GreyText>
+                            </BorderWrapper>)
                     ))
                     ) : <TextEmpty>-тут ничего нет-</TextEmpty>}
                     {filteredDataCommon.length >= baseListSize && (
@@ -158,15 +167,21 @@ export const People = () => {
                 <BodyContent>
                     <TopText>из школы</TopText>
                     {filteredDataSchool.length ? (filteredDataSchool.map(({ name, surname, id }, index) => (
-                        index < showRowsSchool && <OneClass key={id}>
-                            <Text>
-                                {name} {surname}
-                            </Text>
+                        index < showRowsSchool &&
+                        <BorderWrapper key={id}>
+                            <OneClass >
+                                <Text>
+                                    {name} {surname}
+                                </Text>
 
-                            <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
-                                {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
-                            </ButtonSelect>
-                        </OneClass>
+                                <ButtonSelect onClick={() => {
+                                    setActiveClass([...activeClass, id]);
+                                    dispatch(addFriend({ userId: '63e79aea38454378d450b987' }));
+                                }} >
+                                    {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
+                                </ButtonSelect>
+                            </OneClass>
+                        </BorderWrapper>
                     ))
                     ) : <TextEmpty>-тут ничего нет-</TextEmpty>}
                     <BottomButtonSpace>
@@ -197,13 +212,18 @@ const BodyContent = st.div`
     text-align: center;
  
 `;
-
+const GreyText = st.text`
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+color: rgba(15, 18, 23, 0.25);
+`;
 const SearchBar = st.div`
     height:40px;
     display: flex;
     justify-content: left;
     text-size:12px;
-    padding:0px 10px;
+    padding:0px 5px;
 `;
 const TextEmpty = st.div`
 height: 2em;
@@ -211,13 +231,21 @@ opacity:0.3;
 font-size: 13px;
 `;
 const OneClass = st.div`
-    border-bottom: 1px solid rgba(15, 18, 23, 0.25);
+    
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    padding:20px 5px;
+    
     align-items: center;
-    height:30px;
-
+  
+    width:100%;
+`;
+const BorderWrapper = st.div`
+border-bottom: 1px solid rgba(15, 18, 23, 0.25);
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding:5px;
 `;
 
 const TopText = st.div`
