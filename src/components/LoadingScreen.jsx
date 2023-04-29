@@ -17,10 +17,11 @@ export const LoadingScreen = () => {
 
 const Parent = st.button`
     position:absolute;
-    background:#FDFDFF;
+    background:#001514;
+   
     border:none;
     height: 100%;
     width:  100%;
     left: 0;
-    top:0;
+    top:220px;
 `;

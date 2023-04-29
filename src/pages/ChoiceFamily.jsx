@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import FamilyPicture from '../pictures/FamilyPicture.png';
 import { MainLayout } from '../components/MainLayout';
-import {Input} from '../components/Input';
+import { Input } from '../components/Input';
+import { useDispatch } from 'react-redux';
+import { addGender, addSurname } from '../redux/actions';
 
 export const ChoiceFamily = () => {
     const [value, setValue] = useState("");
+    const dispatch = useDispatch()
     const chageInput = (value) => {
         setValue(value.replace(/[^а-яё\s]/gi, ''));
     }
     return (
-        <MainLayout nextPage={"/choiceFriend"} prevPage={"/choiceName"}>
+        <MainLayout nextPage={"/choiceFriend"} prevPage={"/choiceName"} clickMainButton={() => dispatch(addSurname({ lastName: value }))}>
             <Parent>
                 <Header>
                     Твоя фамилия
                 </Header>
                 <BlockImage>
-                    <img src={FamilyPicture} alt="FamilyPicture"/>
+                    <img src={FamilyPicture} alt="FamilyPicture" />
                 </BlockImage>
                 <Input value={value} onChange={chageInput} placeholder="Например: Степанов" />
             </Parent>

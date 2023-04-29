@@ -8,6 +8,9 @@ import CrystalBallBig from '../pictures/CrystalBallBig.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComplimentList } from '../redux/actions';
+import { MenuLayout } from '../components/MenuLayout';
+import { useParams } from 'react-router-dom';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 
 // const questionsForStudents = [
@@ -446,23 +449,24 @@ import { getComplimentList } from '../redux/actions';
 //     }
 // ]
 const justPaidInitialState = false
-const dateNow = 1677622840; //newDate ??
+const dateNow = 1681342325293; //newDate ??
 export const NewCompliments = () => {
     const dispatch = useDispatch()
     const { isLoad: isLoading, data: questionsForStudents } = useSelector((state) => state.compliment);
-
+    // const questionsForStudents = rawData.data
     console.log(questionsForStudents)
     useEffect(() => {
         dispatch(getComplimentList())
 
     }, [])
 
-
+    var content = <LoadingScreen />
     const navigate = useNavigate()
     const [paidPopVisible, setPaidPopVisible] = useState(justPaidInitialState)//БАГ
     console.log("paid: " + paidPopVisible)
     if (!isLoading && questionsForStudents) {
-        return (
+
+        content = <Wrap>
 
             <Parent>
                 {paidPopVisible &&
@@ -477,35 +481,40 @@ export const NewCompliments = () => {
                         </BlackWrapper>
                     </BlackOverflow>
                 }
-
-
                 <BodyContent>
-                    {questionsForStudents.map(({ fromWhomGender, date, id }) => (
-                        <OneClass key={id} onClick={() => navigate(`/newcomplimentsdetails/${id}`)}>
+                    {questionsForStudents.map(({ fromWhomGender, date, _id }) => (
+                        <OneClass key={_id} onClick={() => navigate(`/newcomplimentsdetails/${_id}`)}>
                             <SugarSpace>{
                                 fromWhomGender === 'male' ? <BlueCrystal></BlueCrystal> : <PinkCrystal></PinkCrystal>
                             }
                                 <Text>{fromWhomGender === 'male' ? "от мальчика" : "от девочки"}</Text></SugarSpace>
 
-                            <ButtonText>{Math.floor((date - dateNow) / 3600)}ч</ButtonText>
+                            <ButtonText>{Math.floor((dateNow - date) / 3600000)}ч</ButtonText>
                         </OneClass>
                     ))}
+                    <> <ButtonInvite onClick={() => navigate('/payadd')}><KeyIcon /><Text>Узнать от кого сахарки</Text></ButtonInvite></>
+
                 </BodyContent>
-                <> <ButtonInvite onClick={() => navigate('/payadd')}><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite></>
-
             </Parent>
-
-        )
-    } else {
-        <div>Loading...</div>
+        </Wrap>
     }
+    return (<Wrap>
+        <MenuLayout>{content}</MenuLayout>
+    </Wrap>)
 }
-
+const Wrap = st.div`
+background: #001514;
+height: 100%;
+`;
 const Parent = st.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    border-radius: 16px;
+    background: #FDFDFF;
+    justify-content: flex-start;
+    height:100vh;
+    margin: 0 10px;
 `;
 const Rounder = st.div`
     border-radius:16px;
@@ -576,7 +585,7 @@ width: 100px;
 
 const ButtonInvite = st.div`
 position:fixed;
-bottom:30px;
+top:60vh;
     background: #0F1217;
     margin-top: 15px;
     border-radius: 55px;
@@ -586,12 +595,13 @@ bottom:30px;
     justify-content: center;
     padding: 5px 15px;
     align-items: center;
-    width:80%;
+    width:85%;
     font-weight: 500;
     font-size: 15px;
     line-height: 18px;
     overflow:visible;
     height:40px;
+    z-index: 11;
     
 `;
 const Header = st.div`

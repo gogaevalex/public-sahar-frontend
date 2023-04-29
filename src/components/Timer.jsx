@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-export const Timer = () => {
+export const Timer = ({ startTimeGame, finishTimeFunc }) => {
+  const currentTime = new Date()
+  const startTime = new Date(startTimeGame)
 
-  const [count, setCount] = useState(1800);//здесь нужно поставить 1800
-  const [delay, setDelay] = useState(1200);//интервал 
+  const [count, setCount] = useState(20);//здесь нужно поставить 1800
+  //startTime.getTime() - currentTime.getTime()) / 1000
+
+  const [delay, setDelay] = useState(1000);//интервал 
   const [isRunning, setIsRunning] = useState(true);
 
   useInterval(
     () => {
-      // Your custom logic here
-      setCount(count - 1);
+      if (count < 2) {
+        finishTimeFunc()
+      } else {
+        setCount(count - 1);
+      }
+
     },
     count ? delay : null
   );

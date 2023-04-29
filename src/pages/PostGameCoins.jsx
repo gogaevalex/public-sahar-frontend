@@ -12,7 +12,7 @@ import { getEarnedCoins } from '../redux/actions';
 import { getQuestionList, updateNonce, updateOrder, updateQuestionNumber, getUser } from '../redux/actions';
 import { useNavigate } from 'react-router-dom';
 
-export const PostGame = () => {
+export const PostGameCoins = () => {
 
 
 
@@ -34,72 +34,51 @@ export const PostGame = () => {
 
 
 
-    const { isLoad: isLoadingUser, startTimeGame } = useSelector((state) => state.user);
+    const { isLoad: isLoadingUser, startTimeGame, coins: earnedBalance, justEarned: earnedCoins } = useSelector((state) => state.user);
     // const earnedCoins = useSelector((state) => state.earnedCoins.data);//сюда надо перекинуть инфу о заработаных монетах из Questions
     // const { balance: earnedBalance, earned: earnedCoins } = useSelector((state) => state.earnedCoins.data);//сюда надо перекинуть инфу об общем балансе юзера
-    const earnedBalance = 14
-    const earnedCoins = 50
+    // const earnedBalance = 14
+    // const earnedCoins = 50
     if (!isLoadingUser && startTimeGame) {
         return (
-
             <Parent>
-                {!isCollected ? (
-                    <BodyContent>
-                        <Header>
-                            Ура!
-
-                        </Header>
-                        <CentralImage src={CoinsStacked}></CentralImage>
+                <BodyContentNewGame>
+                    <PopUp
+                        setOpenedPopUp={setOpenedPopUp}
+                        openedPopUp={openedPopUp}>
                         <Text>
-                            заработано: {earnedCoins} монет
-                        </Text>
-                        <ButtonGetCoins onClick={() => {
-                            setIsCollected(true);
-                        }} >
-                            <ButtonImage src={CashTounge} />
-                            <Text>
-                                забрать монеты
-                            </Text>
-                        </ButtonGetCoins>
-                    </BodyContent>
-                ) :
-                    (<BodyContentNewGame>
-                        <PopUp
-                            setOpenedPopUp={setOpenedPopUp}
-                            openedPopUp={openedPopUp}>
-                            <Text>
-                                переправь сообщение из сахарок-бота другу или подруге и тебе не надо будет ждать начала следующей игры
+                            переправь сообщение из сахарок-бота другу или подруге и тебе не надо будет ждать начала следующей игры
 
-                            </Text>
-                            <br></br>
-                            <ButtonInvite>перейти в бота</ButtonInvite>
-                        </PopUp>
+                        </Text>
+                        <br></br>
+                        <ButtonInvite>перейти в бота</ButtonInvite>
+                    </PopUp>
+                    <Text>
+                        твой баланс: {earnedBalance} монет
+                    </Text>
+                    <Heading>
+                        Новая игра<br />
+                    </Heading>
+                    <CentralImage src={Padlock}></CentralImage>
+                    <Text>будет доступна через <Timer startTimeGame={startTimeGame} finishTimeFunc={() => navigate("/questions")}></Timer></Text>
+                    <TextSecondary>
+                        или <br />
+                        чтобы играть и не ждать
+                        <br />
+                        <Arrow>🠻</Arrow>
+                    </TextSecondary>
+                    <ButtonInvite onClick={() => {
+                        setOpenedPopUp(true);
+
+                    }} >
+                        <ButtonImageTicket src={Tickets} />
                         <Text>
-                            твой баланс: {earnedBalance} монет
+                            пригласи друга
                         </Text>
-                        <Heading>
-                            Новая игра<br />
-                        </Heading>
-                        <CentralImage src={Padlock}></CentralImage>
-                        <Text>будет доступна через <Timer startTimeGame={startTimeGame} finishTimeFunc={() => navigate("/questions")}></Timer></Text>
-                        <TextSecondary>
-                            или <br />
-                            чтобы играть и не ждать
-                            <br />
-                            <Arrow>🠻</Arrow>
-                        </TextSecondary>
-                        <ButtonInvite onClick={() => {
-                            setOpenedPopUp(true);
+                    </ButtonInvite>
 
-                        }} >
-                            <ButtonImageTicket src={Tickets} />
-                            <Text>
-                                пригласи друга
-                            </Text>
-                        </ButtonInvite>
+                </BodyContentNewGame>
 
-                    </BodyContentNewGame>
-                    )}
             </Parent>
 
         )

@@ -1,22 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import NamePicture from '../pictures/NamePicture.png';
 import { MainLayout } from '../components/MainLayout';
-import {Input} from '../components/Input';
+import { Input } from '../components/Input';
+import { useDispatch } from 'react-redux';
+import { addName } from '../redux/actions';
+
 
 export const ChoiceName = () => {
     const [value, setValue] = useState("");
+    const dispatch = useDispatch()
     const chageInput = (value) => {
         setValue(value.replace(/[^а-яё\s]/gi, ''));
     }
     return (
-        <MainLayout nextPage={"/choiceFamily"} prevPage={"/choiceSchool"}>
+        <MainLayout nextPage={"/choiceFamily"} prevPage={"/choiceSchool"} clickMainButton={() => dispatch(addName({ firstName: value }))}>
             <Parent>
                 <Header>
                     Твое имя
                 </Header>
                 <BlockImage>
-                    <img src={NamePicture} alt="namePicture"/>
+                    <img src={NamePicture} alt="namePicture" />
                 </BlockImage>
                 <Input value={value} onChange={chageInput} placeholder="Например: Женя" />
             </Parent>

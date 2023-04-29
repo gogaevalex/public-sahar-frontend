@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import st from '@emotion/styled';
-import {ArrowLeftIcon} from '../icons/ArrowLeftIcon';
+import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
 import { useNavigate } from 'react-router-dom';
-import {useTelegram} from "../hooks/useTelegram";
+import { useTelegram } from "../hooks/useTelegram";
+
 
 export const MainLayout = ({
     children,
@@ -10,9 +11,9 @@ export const MainLayout = ({
     showMainButton = true,
     clickMainButton,
     nextPage,
-    prevPage = "/"
+    prevPage = "/",
 }) => {
-    const {tg} = useTelegram();
+    const { tg } = useTelegram();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,7 +37,8 @@ export const MainLayout = ({
 
     return <Parent>
         <BackPage onClick={() => {
-            clickBackPage ? clickBackPage() : navigate(prevPage)
+            clickBackPage ? clickBackPage() : navigate(prevPage);
+
         }}>
             <ArrowLeftIcon />
         </BackPage>

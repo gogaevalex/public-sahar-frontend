@@ -11,8 +11,8 @@ import $api from '../../utils/api';
 
 function* getEarnedCoinsRequest() {
     try {
-        const result = 17;//api call should be here instead
-
+        //const result = 17;//api call should be here instead
+        const result = yield call(() => $api.get('/user/addCoins'));
         yield put(getEarnedCoinsSuccess(result));
 
     } catch (error) {

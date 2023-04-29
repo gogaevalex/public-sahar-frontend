@@ -1,25 +1,33 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import BoyPicture from '../pictures/BoyPicture.png';
 import GirlPicture from '../pictures/GirlPicture.png';
+import { addGender } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 
 import { MainLayout } from '../components/MainLayout';
 
 export const ChoiceGender = () => {
     const [gender, setGender] = useState(null);
-
+    const dispatch = useDispatch();
+    console.log(gender)
     return (
-        <MainLayout nextPage={"/choicePromo"} prevPage={"/choiceFriend"}>
+        //   userId={"63f4e8d0c50da0a58bc33718"}
+        <MainLayout nextPage={"/choicePromo"} clickMainButton={() => dispatch(addGender({ gender }))} prevPage={"/choiceFriend"} >
             <Parent>
                 <Header>
-                Укажи свой пол
+                    Укажи свой пол
                 </Header>
                 <BodyContent>
-                    <BlockImageBoy active={gender === "male"} onClick={() => setGender("male")}>
-                        <img src={BoyPicture} alt="boyPicture"/>
+                    <BlockImageBoy active={gender === "male"}
+                        onClick={() => {
+                            setGender("male");
+
+                        }}>
+                        <img src={BoyPicture} alt="boyPicture" />
                     </BlockImageBoy>
                     <BlockImageGirl active={gender === "female"} onClick={() => setGender("female")}>
-                        <img src={GirlPicture} alt="girlPicture"/>
+                        <img src={GirlPicture} alt="girlPicture" />
                     </BlockImageGirl>
                 </BodyContent>
             </Parent>
@@ -32,7 +40,7 @@ const Parent = st.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px
+    padding: 30px;
 `;
 
 const Header = st.div`
@@ -52,10 +60,11 @@ const BlockImageBoy = st.div`
     height: 134px;
     width: 134px;
     padding: 2px;
-    border: ${({active}) => active && "2px solid var(--tg-theme-text-color)"};
+    border: ${({ active }) => active && "2px solid var(--tg-theme-text-color)"};
     align-items: center;
     display: flex;
     justify-content: center;
+    cursor:pointer;
 `;
 
 const BlockImageGirl = st.div`
@@ -64,9 +73,10 @@ const BlockImageGirl = st.div`
     width: 134px;
     border-radius: 10px;
     padding: 2px;
-    border: ${({active}) => active && "2px solid var(--tg-theme-text-color)"};
+    border: ${({ active }) => active && "2px solid var(--tg-theme-text-color)"};
     align-items: center;
     display: flex;
     justify-content: center;
+    cursor:pointer;
 `;
 

@@ -1,145 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import st from '@emotion/styled'
 import { useNavigate } from 'react-router-dom';
 import { WhiteExitIcon } from '../icons/WhiteExitIcon';
 import { SelectActiveIcon } from '../icons/SelectActiveIcon';
 import { SelectInactiveIcon } from '../icons/SelectInactiveIcon';
 import { Input } from '../components/Input';
-
-const dataClass = [
-    {
-        name: "Вася",
-        surname: "Пупкин",
-        id: 5,
-    },
-    {
-        name: "Ася",
-        surname: "Пупкина",
-        id: 6,
-    },
-    {
-        name: "Ганс",
-        surname: "Андерсон",
-        id: 7,
-    },
-    {
-        name: "Марк",
-        surname: "Хоровиц",
-        id: 8,
-    },
-    {
-        name: "Чеге",
-        surname: "Вара",
-        id: 9,
-    },
-    {
-        name: "Ой",
-        surname: "Морозов",
-        id: 10,
-    },
-    {
-        name: "Жанна",
-        surname: "Дарк",
-        id: 11,
-    },
-    {
-        name: "Упсала",
-        surname: "Вивишня",
-        id: 12,
-    },
-    {
-        name: "Валя",
-        surname: "Шлупкина",
-        id: 25,
-    },
-    {
-        name: "Дасист",
-        surname: "Фантастиш",
-        id: 26,
-    },
-    {
-        name: "Гем",
-        surname: "Отоген",
-        id: 27,
-    },
-    {
-        name: "Димка",
-        surname: "Дымоходов",
-        id: 28,
-    },
-    {
-        name: "Сисим",
-        surname: "Салавимкина",
-        id: 29,
-    },
-    {
-        name: "Изя",
-        surname: "Гемкина",
-        id: 20,
-    },
-    {
-        name: "Жуль",
-        surname: "Верн",
-        id: 21,
-    },
-    {
-        name: "Ус",
-        surname: "Накручивашко",
-        id: 22,
-    },
-]
+import { InputtedText } from '../components/InputtedText';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFriendList } from '../redux/actions';
+import { LoadingScreen } from '../components/LoadingScreen';
+import $api from '../utils/api';
 
 
 export const ShopCrushOption = () => {
+    const buyCertain = async (data) => {
+        try {
+            await $api.post('/buy/certain', { data });
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const [activeClass, setActiveClass] = useState(null);
     const [value, setValue] = useState("");
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { list: dataClass, isLoad: isLoadingFriends } = useSelector((state) => state.friend).friendList;
+
+    useEffect(() => {
+        dispatch(getFriendList())
+    }, [])
     //create a new array by filtering the original array
-    const filteredData = dataClass.filter((el) => {
-        //if no input the return the original
-        if (value === '') {
-            return el;
-        }
-        //return the item which contains the user input
-        else {
-            const str = el.name + " " + el.surname;
-            return str.toLowerCase().includes(value)
-        }
-    })
-    return (
+
+    if (!isLoadingFriends && dataClass) {
+        console.log('people', dataClass)
+        const filteredData = dataClass.contactList.filter((el) => {
+            if (value === '') {
+                return el;
+            }
+            else {
+                if (el !== null) {
+                    const str = el.firstName + " " + el.lastName;
+                    return str.toLowerCase().includes(value.toLowerCase())
+                }
+            }
+        })
+        return (
 
 
-        <Parent>
-            <Rounder>
-                <Header>
-                    <ConfirmButton activeClass={activeClass}>Подтвердить</ConfirmButton>
-                    <ExitButton onClick={() => navigate('/shop')/*bug*/} >
-                        <WhiteExitIcon ></WhiteExitIcon>
-                    </ExitButton>
-                    <TopText>Выбери друга у которого хочешь появиться в опросе</TopText>
+            <Parent>
+                <Rounder>
+                    <Header>
+                        <ConfirmButton
+                            activeClass={activeClass}
+                            onClick={() => {
+                                console.log("buy", activeClass)
+                                buyCertain({ contactUserId: activeClass })
+                                navigate('/shop');
+                            }}
+                        >Подтвердить</ConfirmButton>
+                        <ExitButton onClick={() => navigate('/shop')/*bug*/} >
+                            <WhiteExitIcon ></WhiteExitIcon>
+                        </ExitButton>
+                        <TopText>Выбери друга у которого хочешь появиться в опросе</TopText>
 
-                </Header>
-                {/*со следующим обновлением будет добавлен поиск по друзьям*/}
-                <SearchBar>
-                    <Input value={value} onChange={setValue} placeholder="поиск..." />
-                </SearchBar>
-                <BodyContent>
-                    {filteredData.map(({ name, surname, id }) => (
-                        <OneClass key={id}>
-                            <Text>
-                                {name} {surname}
-                            </Text>
-                            <ButtonSelect onClick={() => setActiveClass(id)} activeColor={activeClass === id}>
-                                {activeClass === id ? <SelectActiveIcon /> : <SelectInactiveIcon />}
-                            </ButtonSelect>
-                        </OneClass>
-                    ))}
-                </BodyContent>
-            </Rounder>
-        </Parent>
+                    </Header>
+                    {/*со следующим обновлением будет добавлен поиск по друзьям*/}
+                    <SearchBar>
+                        <Input value={value} onChange={setValue} placeholder="поиск..." />
+                    </SearchBar>
+                    <BodyContent>
+                        {filteredData.map(({ firstName, lastName, _id, contactUserId }) => (
+                            <OneClass key={_id}>
+                                <Text>
+                                    {firstName} {lastName}
+                                </Text>
+                                <ButtonSelect onClick={() => setActiveClass(contactUserId)} activeColor={activeClass === contactUserId}>
+                                    {activeClass === contactUserId ? <SelectActiveIcon /> : <SelectInactiveIcon />}
+                                </ButtonSelect>
+                            </OneClass>
+                        ))}
+                    </BodyContent>
+                </Rounder>
+            </Parent>
 
-    )
+        )
+    } else {
+        return (
+            <LoadingScreen />
+        )
+    }
 }
 
 const Parent = st.div`
@@ -147,6 +97,7 @@ const Parent = st.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: #FDFDFF;
 `;
 const Rounder = st.div`
 border-radius:16px;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import st from '@emotion/styled'
 
 import { TwoBigCoins } from '../icons/TwoBigCoins';
@@ -7,8 +7,12 @@ import CrystalBallSmall from '../pictures/CrystalBallSmall.png';
 import GradHat from '../pictures/GradHat.png';
 import SchoolGrey from '../pictures/SchoolGrey.png';
 import GreySugar from '../pictures/GreySugar.png';
-
-
+import { MenuLayout } from '../components/MenuLayout';
+import { InputtedText } from '../components/InputtedText';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFriendList, getUser } from '../redux/actions';
+import { LoadingScreen } from '../components/LoadingScreen';
+import $api from '../utils/api';
 const friendsNumber = 154
 const SugarNumber = 340
 const classNumber = 11
@@ -25,207 +29,159 @@ const dataClassProfile = {
     premium: true
 }
 
-const dataClassFriends = [
-
-    {
-        name: "Дасист",
-        surname: "Фантастиш",
-        id: 26,
-
-    },
-    {
-        name: "Гем",
-        surname: "Отоген",
-        id: 27,
-
-    },
-    {
-        name: "Димка",
-        surname: "Дымоходов",
-        id: 28,
-
-    },
-    {
-        name: "Сисим",
-        surname: "Салавимкина",
-        id: 29,
-
-    },
-    {
-        name: "Изя",
-        surname: "Гемкина",
-        id: 20,
-
-    },
-    {
-        name: "Уляля",
-        surname: "Вививи",
-        id: 12,
-
-    },
-    {
-        name: "Вася",
-        surname: "Пупкин",
-        id: 5,
-
-    },
-    {
-        name: "Ася",
-        surname: "Пупкина",
-        id: 6,
-
-    },
-    {
-        name: "Ганс",
-        surname: "Андерсон",
-        id: 7,
-
-    },
-    {
-        name: "Марк",
-        surname: "Хоровиц",
-        id: 8,
-
-    },
-    {
-        name: "Чеге",
-        surname: "Вара",
-        id: 9,
-
-    },
-    {
-        name: "Ой",
-        surname: "Морозов",
-        id: 10,
-
-    },
 
 
-]
-
-const dataClassBlocked = [
-    {
-        name: "Жанна",
-        surname: "Дарк",
-        id: 11,
-
-    },
-    {
-        name: "Упсала",
-        surname: "Вивишня",
-        id: 12,
-
-    },
-    {
-        name: "Валя",
-        surname: "Шлупкина",
-        id: 25,
-
-    }
-]
 export const Profile = () => {
+
+    const deleteContact = async (data) => {
+        try {
+            console.log("tryingDelete", data)
+            //api call should be here instead
+            await $api.delete('/contact/delete', { data });
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     const navigate = useNavigate()
     const [activeClass, setActiveClass] = useState([]);
-    const baseListSize = 5
+    const baseListSize = 10
     const listIncreaseStep = 10
+
+
+    const dispatch = useDispatch()
+    const { isLoad: isLoadingUser, coins: earnedBalance } = useSelector((state) => state.user);
+
+    const { list: friendList, isLoad: isLoadingFriends } = useSelector((state) => state.friend).friendList;
+    console.log('people', friendList)
+
+    useEffect(() => {
+        dispatch(getFriendList());
+        dispatch(getUser());
+    }, [])
     const [showRowsFriends, setShowRowsFriends] = useState(baseListSize)
     const [showRowsBlocked, setShowRowsBlocked] = useState(baseListSize)
+    var content = <LoadingScreen />
+    if (!isLoadingFriends && friendList) {
 
+        const dataClassFriends = friendList.contactList
 
+        content = <Wrap>
 
-    return (
+            <Parent>
+                <Rounder>
 
+                    <BioSpace>
+                        <ExtraMargin>
+                            <BioLines>
+                                {dataClassProfile.name + " " + dataClassProfile.surname}
+                                {dataClassProfile.premium && <SmallPics src={CrystalBallSmall} />}
+                            </BioLines>
+                        </ExtraMargin>
+                        <BioLines>
+                            <div>
+                                <SmallerPics src={SchoolGrey} />
+                                <GreyText>{dataClassProfile.schoolName}</GreyText>
+                            </div>
+                        </BioLines>
+                        <BioLines>
+                            <div>
 
-        <Parent>
-            <Rounder>
+                                <GreyText><SmallerPicsMar src={GradHat} />{dataClassProfile.classNumber} класс</GreyText>
+                            </div>
+                        </BioLines>
+                        <BioLines>
+                            <div>
+                                <GreyText><SmallerPicsSug src={GreySugar} />сахарки <BlackText>{dataClassProfile.SugarNumber}</BlackText></GreyText>
 
-                <BioSpace>
-                    <BioLines>
-                        {dataClassProfile.name + " " + dataClassProfile.surname}
-                        {dataClassProfile.premium && <SmallPics src={CrystalBallSmall} />}
-                    </BioLines>
-                    <BioLines>
-                        <div>
-                            <SmallerPics src={SchoolGrey} />
-                            <GreyText>{dataClassProfile.schoolName}</GreyText>
-                        </div>
-                        <>&nbsp;</>
-                        <div>
-                            <SmallerPicsMar src={GradHat} />
-                            <GreyText>{dataClassProfile.classNumber} класс</GreyText>
-                        </div>
+                            </div>
+                        </BioLines>
+                    </BioSpace>
+                    <BodyContent>
+                        <TopText>
+                            баланс
+                        </TopText>
+                    </BodyContent>
+                    <BioLinesBody>
+                        <BigText><TwoBigCoins /> {earnedBalance}</BigText>
+                        <ButtonShop onClick={() => navigate('/shop')}>магазин</ButtonShop>
+                    </BioLinesBody>
 
-                    </BioLines>
-                    <BioLines>
-                        <GreyText><SmallerPicsSug src={GreySugar} />сахарки <BlackText>{dataClassProfile.SugarNumber}</BlackText></GreyText>
-                    </BioLines>
-                </BioSpace>
-                <BodyContent>
-                    <TopText>
-                        монеты
-                    </TopText>
+                    <BodyContent>
+                        <TopText>друзья <BlackText>{dataClassFriends.length}</BlackText></TopText>
 
+                        {dataClassFriends.length ? (dataClassFriends.map(({ firstName, lastName, _id }, index) => (
+                            index < showRowsFriends && (<OneClass key={_id}>
+                                <Text>
+                                    {firstName} {lastName}
+                                </Text>
+                                <ButtonSelect onClick={() => {
+                                    setActiveClass([...activeClass, _id]);
+                                    deleteContact({ _id: _id });
+                                }} >
+                                    {activeClass.find((item) => item === _id) ? <RequestSent>друг удален</RequestSent> : <ButtonFriendship>удалить</ButtonFriendship>}
+                                </ButtonSelect>
+                            </OneClass>)
+                        ))
+                        ) : <TextEmpty>-тут ничего нет-</TextEmpty>
+                        }
+                        {dataClassFriends.length >= baseListSize && (
+                            <BottomButtonSpace>
+                                <ButtonMore onClick={() => setShowRowsFriends(Math.min(showRowsFriends + listIncreaseStep, dataClassFriends.length))} activeColor={showRowsFriends === dataClassFriends.length}>еще</ButtonMore>
+                                <ButtonHide onClick={() => setShowRowsFriends(Math.max(showRowsFriends - listIncreaseStep, baseListSize))} activeColor={showRowsFriends === baseListSize}>скрыть</ButtonHide>
+                            </BottomButtonSpace>
+                        )}
+                    </BodyContent>
+                    {/* <BodyContent>
 
-                </BodyContent>
-                <BioLines>
-                    <BigText><TwoBigCoins /> {dataClassProfile.coinsEarned}</BigText>
-                    <ButtonShop onClick={() => navigate('/shop')}>магазин</ButtonShop>
-                </BioLines>
+                        <TopText>заблокированые <BlackText>{dataClassBlocked.length}</BlackText></TopText>
+                        {dataClassBlocked.length ? (dataClassBlocked.map(({ name, surname, id }, index) => (
+                            index < showRowsBlocked && <OneClass key={id}>
+                                <Text>
+                                    {name} {surname}
+                                </Text>
 
-                <BodyContent>
-                    <TopText>друзья <BlackText>{dataClassFriends.length}</BlackText></TopText>
+                                <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
+                                    {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
+                                </ButtonSelect>
+                            </OneClass>
+                        ))
+                        ) : <TextEmpty>-тут ничего нет-</TextEmpty>}
+                        {dataClassBlocked.length >= baseListSize && (
+                            <BottomButtonSpace>
+                                <ButtonMore onClick={() => setShowRowsBlocked(Math.min(showRowsBlocked + listIncreaseStep, dataClassBlocked.length))} activeColor={showRowsBlocked === dataClassBlocked.length}>еще</ButtonMore>
+                                <ButtonHide onClick={() => setShowRowsBlocked(Math.max(showRowsBlocked - listIncreaseStep, baseListSize))} activeColor={showRowsBlocked === baseListSize}>скрыть</ButtonHide>
+                            </BottomButtonSpace>
+                        )}
+                    </BodyContent> */}
+                </Rounder>
+            </Parent>
 
-                    {dataClassFriends.length ? (dataClassFriends.map(({ name, surname, id }, index) => (
-                        index < showRowsFriends && (<OneClass key={id}>
-                            <Text>
-                                {name} {surname}
-                            </Text>
-                            <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
-                                {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
-                            </ButtonSelect>
-                        </OneClass>)
-                    ))
-                    ) : <TextEmpty>-тут ничего нет-</TextEmpty>
-                    }
-                    {dataClassFriends.length >= baseListSize && (
-                        <BottomButtonSpace>
-                            <ButtonMore onClick={() => setShowRowsFriends(Math.min(showRowsFriends + listIncreaseStep, dataClassFriends.length))} activeColor={showRowsFriends === dataClassFriends.length}>еще</ButtonMore>
-                            <ButtonHide onClick={() => setShowRowsFriends(Math.max(showRowsFriends - listIncreaseStep, baseListSize))} activeColor={showRowsFriends === baseListSize}>скрыть</ButtonHide>
-                        </BottomButtonSpace>
-                    )}
-                </BodyContent>
-                <BodyContent>
-                    <TopText>заблокированые <BlackText>{dataClassBlocked.length}</BlackText></TopText>
-                    {dataClassBlocked.length ? (dataClassBlocked.map(({ name, surname, id }, index) => (
-                        index < showRowsBlocked && <OneClass key={id}>
-                            <Text>
-                                {name} {surname}
-                            </Text>
-
-                            <ButtonSelect onClick={() => setActiveClass([...activeClass, id])} >
-                                {activeClass.find((item) => item === id) ? <RequestSent>друг добавлен</RequestSent> : <ButtonFriendship>дружить</ButtonFriendship>}
-                            </ButtonSelect>
-                        </OneClass>
-                    ))
-                    ) : <TextEmpty>-тут ничего нет-</TextEmpty>}
-                    {dataClassBlocked.length >= baseListSize && (
-                        <BottomButtonSpace>
-                            <ButtonMore onClick={() => setShowRowsBlocked(Math.min(showRowsBlocked + listIncreaseStep, dataClassBlocked.length))} activeColor={showRowsBlocked === dataClassBlocked.length}>еще</ButtonMore>
-                            <ButtonHide onClick={() => setShowRowsBlocked(Math.max(showRowsBlocked - listIncreaseStep, baseListSize))} activeColor={showRowsBlocked === baseListSize}>скрыть</ButtonHide>
-                        </BottomButtonSpace>
-                    )}
-                </BodyContent>
-            </Rounder>
-        </Parent>
-
-    )
+        </Wrap>
+    }
+    return (<Wrap>
+        <MenuLayout>{content}</MenuLayout>
+    </Wrap>)
 }
-
+const Wrap = st.div`
+background: #001514;
+height: 100vh;
+`;
 const Parent = st.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: #FDFDFF;
+    border-radius: 16px;
+    margin: 0 10px;
+    
+`;
+const ExtraMargin = st.div`
+
+    margin: 0 0 5px 2px;
     
 `;
 const Rounder = st.div`
@@ -236,6 +192,7 @@ const Rounder = st.div`
 
 const BodyContent = st.div`
     text-align: center;
+    margin-top: 17px;
 `;
 
 const BioSpace = st.div`
@@ -251,6 +208,14 @@ display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
+height: 20px;
+`;
+const BioLinesBody = st.div`
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+justify-content: space-around;
+height: 45px;
 `;
 const GreyText = st.text`
 font-weight: 400;
@@ -271,13 +236,13 @@ margin: 0 2px 0 0;
 const SmallerPicsMar = st.img`
 height: 20px;
 transform: translatey(8px);
-margin:2px;
+margin:0 2px 4px 0;
 `;
 
 const SmallerPicsSug = st.img`
 height: 18px;
 transform: translatey(6px);
-margin:0 2px;
+margin:9px 4px 0 2px;
 opacity:0.8;
 `;
 
@@ -287,8 +252,9 @@ font-weight: 700;
 `;
 
 const BigText = st.div`
+
 font-weight: 900;
-font-size: 30px;
+font-size: 35px;
 line-height: 33px;
 color: #FBB701;
 margin-left:3px;
@@ -331,7 +297,7 @@ const ButtonSelect = st.div`
 `;
 
 const ButtonFriendship = st.div`
-background: #FC7753;
+background: #E3271B;
 color: #FDFDFF;
 border-radius: 14px;
 font-weight: 300;
@@ -346,7 +312,7 @@ padding:0 7px;
 const ButtonShop = st.div`
 background: #FC7753;
 color: #FDFDFF;
-border-radius: 16px;
+border-radius: 20px;
 font-weight: 500;
 font-size: 18px;
 line-height: 16px;
@@ -355,7 +321,7 @@ display:flex;
 align-items: center;
 justify-content: center;
 padding:0 7px;
-width: 50%;
+width: 40%;
 margin:5px;
 `;
 

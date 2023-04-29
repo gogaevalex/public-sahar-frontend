@@ -15,6 +15,8 @@ import { InfoBotPage } from "./pages/InfoBotPage";
 import { NewsLinePage } from "./pages/NewsLinePage";
 import { Questions } from "./pages/Questions";
 import { PostGame } from "./pages/PostGame";
+import { PostGameCoins } from "./pages/PostGameCoins";
+import { PostGameStart } from "./pages/PostGameStart";
 import { PayAdd } from "./pages/PayAdd";
 import { Shop } from "./pages/Shop";
 import { ShopCrushOption } from './pages/ShopCrushOption';
@@ -49,6 +51,8 @@ function App() {
                 <Route path={'/newsline'} element={<NewsLinePage />} />
                 <Route path={'/questions'} element={<Questions />} />
                 <Route path={'/postgame'} element={<PostGame />} />
+                <Route path={'/postgame/start'} element={<PostGameStart />} />
+                <Route path={'/postgame/coins'} element={<PostGameCoins />} />
                 <Route path={'/payadd'} element={<PayAdd />} />
                 <Route path={'/shop'} element={<Shop />} />
                 <Route path={'/shopcrushoption'} element={<ShopCrushOption />} />

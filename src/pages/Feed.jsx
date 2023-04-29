@@ -3,6 +3,7 @@ import st from '@emotion/styled'
 import { BlueCrystalSmall } from '../icons/BlueCrystalSmall';
 import { PinkCrystalSmall } from '../icons/PinkCrystalSmall';
 import { KeyIcon } from '../icons/KeyIcon';
+import { MenuLayout } from '../components/MenuLayout';
 
 const questionsForStudents = [
     {
@@ -179,54 +180,59 @@ const questionsForStudents = [
 ]
 const dateNow = 1677622840;
 export const Feed = () => {
-
     return (
-
-        <Parent>
-
-
-            <BodyContent>
-                {questionsForStudents.map(({ imageLink, text, winner, date, id }) => (
-                    <OneClass key={id}>
-                        <Blocks>
-                            <FlexWrapper>
-                                <Text>{winner.name}</Text> {
-                                    winner.fromWhomGender === 'male' ? <TinyText>получил</TinyText> : <TinyText>получила</TinyText>
+        <Wrap>
+            <MenuLayout>
+                <Parent>
+                    <BodyContent>
+                        <BigText>Лента будет доступна в следующем обновлении :3</BigText>
+                        {/*    {questionsForStudents.map(({ imageLink, text, winner, date, id }) => (
+                            <OneClass key={id}>
+                                <Blocks>
+                                    <FlexWrapper>
+                                        <Text>{winner.name}</Text> {
+                                            winner.fromWhomGender === 'male' ? <TinyText>получил</TinyText> : <TinyText>получила</TinyText>
+                                        }
+                                    </FlexWrapper>
+                                    <FlexWrapper>
+                                        <ButtonText>{Math.floor((date - dateNow) / 60)}мин</ButtonText>
+                                    </FlexWrapper>
+                                </Blocks>
+                                <QuestionText>{text}</QuestionText>
+                                <SugarSpace>{
+                                    winner.fromWhomGender === 'male' ? <BlueCrystalSmall></BlueCrystalSmall> : <PinkCrystalSmall></PinkCrystalSmall>
                                 }
-                            </FlexWrapper>
-                            <FlexWrapper>
-                                <ButtonText>{Math.floor((date - dateNow) / 60)}мин</ButtonText>
-                            </FlexWrapper>
-                        </Blocks>
-                        <QuestionText>{text}</QuestionText>
-                        <SugarSpace>{
-                            winner.fromWhomGender === 'male' ? <BlueCrystalSmall></BlueCrystalSmall> : <PinkCrystalSmall></PinkCrystalSmall>
-                        }
-                            <ButtonText>{winner.fromWhomGender === 'male' ? "от мальчика" : "от девочки"} из {winner.classNumber} класса</ButtonText> </SugarSpace>
+                                    <ButtonText>{winner.fromWhomGender === 'male' ? "от мальчика" : "от девочки"} из {winner.classNumber} класса</ButtonText> </SugarSpace>
 
-                    </OneClass>
-                ))}
-            </BodyContent>
-            <> <ButtonInvite><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite></>
-
-        </Parent>
-
+                            </OneClass>
+                        ))} */}
+                    </BodyContent>
+                </Parent>
+            </MenuLayout>
+        </Wrap>
     )
 }
-
+const Wrap = st.div`
+    background: #001514;
+    height: 100%;
+`;
+const BigText = st.div`
+    font-size: 24px;
+`;
 const Parent = st.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-const Rounder = st.div`
+    background: #FDFDFF;
+    margin: 0 10px;
     border-radius:16px;
+    height: 90vh;
 `;
 
 const ButtonInvite = st.div`
-position:fixed;
-bottom:30px;
+    position:fixed;
+    bottom:30px;
     background: #0F1217;
     margin-top: 15px;
     border-radius: 55px;
@@ -242,7 +248,6 @@ bottom:30px;
     line-height: 18px;
     overflow:visible;
     height:40px;
-    
 `;
 const FlexWrapper = st.div`
     display: flex;
@@ -251,9 +256,9 @@ const FlexWrapper = st.div`
 `;
 
 const QuestionText = st.div`
-font-weight: 300;
-font-size: 17px;
-text-align: left;
+    font-weight: 300;
+    font-size: 17px;
+    text-align: left;
 `;
 const Header = st.div`
     position:relative;
@@ -263,42 +268,37 @@ const Header = st.div`
     padding:70px 20px 20px 20px;
     border-top-left-radius:16px;
     border-top-right-radius:16px;
-
 `;
 const TinyText = st.div`
-font-weight: 400;
-font-size: 11px;
-line-height: 13px;
-margin-left: 5px;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    margin-left: 5px;
 `;
 
 const BodyContent = st.div`
     text-align: center;
     padding:0 20px;
     width: 100%;
-   
-
 `;
 
 const OneClass = st.div`
-   margin:10px;
-   display:flex;
-   flex-direction: column;
-   align-items: flex-start;
+    margin:10px;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 5px 0;
-
     background: #FDFDFF;
- 
     padding:10px;
     cursor:pointer;
     border-bottom: 1px solid rgba(15, 18, 23, 0.25);
 `;
 const Blocks = st.div`
-display:flex;
-flex-direction: row;
-align-items: baseline;
-width:100%;
+    display:flex;
+    flex-direction: row;
+    align-items: baseline;
+    width:100%;
 `;
 const SugarSpace = st.div`
     display: flex;
@@ -318,15 +318,14 @@ const Text = st.div`
 
 `;
 const ButtonText = st.div`
-opacity:40%;
-font-weight: 400;
-font-size: 11px;
-line-height: 13px;
+    opacity:40%;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
 `;
 const ButtonSelect = st.div`
     cursor: pointer;
     padding: 6px 18px;
- 
 `;
 
 const ExitButton = st.div`
