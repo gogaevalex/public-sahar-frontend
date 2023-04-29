@@ -7,6 +7,7 @@ import balanceSaga from './balanceSaga';
 import earnedCoinsSaga from './earnedCoinsSaga';
 import complimentSaga from './complimentSaga';
 import premiumStatusSaga from './premiumStatusSaga';
+import userSaga from './userSaga';
 
 
 
@@ -21,6 +22,8 @@ export default function* root() {
 		fork(balanceSaga),
 		fork(earnedCoinsSaga),
 		fork(complimentSaga),
-		fork(premiumStatusSaga)
+		fork(premiumStatusSaga),
+		fork(userSaga),
+
 	]);
 }

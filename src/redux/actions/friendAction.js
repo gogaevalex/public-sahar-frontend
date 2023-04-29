@@ -37,3 +37,21 @@ export const addFriendError = (error) => ({
 });
 
 
+export const FRIEND_LIST = 'FRIEND_LIST';
+export const FRIEND_LIST_SUCCESS = 'FRIEND_LIST_SUCCESS';
+export const FRIEND_LIST_ERROR = 'FRIEND_LIST_ERROR';
+
+export const getFriendList = (params) => ({
+	type: FRIEND_LIST,
+	params,
+});
+
+export const getFriendListSuccess = (data) => ({
+	type: FRIEND_LIST_SUCCESS,
+	data,
+});
+
+export const getFriendListError = (error) => ({
+	type: FRIEND_LIST_ERROR,
+	error,
+});

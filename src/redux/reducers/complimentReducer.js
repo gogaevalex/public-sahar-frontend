@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
         case COMPLIMENT_LIST_SUCCESS:
             return {
                 ...state,
-                data: action.data,
+                data: action.data.data,
                 isLoad: false,
             };
         case COMPLIMENT_LIST_ERROR:

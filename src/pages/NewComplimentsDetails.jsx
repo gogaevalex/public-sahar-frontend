@@ -3,114 +3,119 @@ import st from '@emotion/styled'
 import { TgIcon } from '../icons/TgIcon';
 import { KeyIcon } from '../icons/KeyIcon';
 import { WhiteExitIcon } from '../icons/WhiteExitIcon';
-import Boy from '../pictures/Boy.png';
-import Girl from '../pictures/Girl.png';
+import Boy from '../pictures/BoyPicture.png';
+import Girl from '../pictures/GirlPicture.png';
 import GuyInTheHole from '../pictures/GuyInTheHole.png';
 import { useLocation } from 'react-router';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPremiumStatus } from '../redux/actions';
 import { useNavigate } from 'react-router-dom';
+import { getComplimentList, getUser } from '../redux/actions';
 
 
-const questionData = [
-    {
+// const questionData = [
+//     {
 
-        text: "Мы бы отлично смотрелись вместе ",
-        fromWhomGender: "male",/*стоит обратить внимание что в отличии от dataClassStudents в Questions.jsx
-        здесь записывается не пол того кому отправляется сахарок, а от кого*/
-        fromClass: 11,//также дополнительно мы отправляем класс ответившего юзера
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        date: 1677621840,
-        questionId: 5,
-        students: [
-            {
+//         text: "Мы бы отлично смотрелись вместе ",
+//         fromWhomGender: "male",/*стоит обратить внимание что в отличии от dataClassStudents в Questions.jsx
+//         здесь записывается не пол того кому отправляется сахарок, а от кого*/
+//         fromClass: 11,//также дополнительно мы отправляем класс ответившего юзера
+//         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
+//         date: 1677621840,
+//         questionId: 5,
+//         students: [
+//             {
 
-                name: "Ахалайа Мохалайа ",
-                won: false,
-                userId: 53,
-            },
-            {
+//                 name: "Ахалайа Мохалайа ",
+//                 won: false,
+//                 userId: 53,
+//             },
+//             {
 
-                name: "Дояна Коровкина ",
-                won: false,
-                userId: 54,
-            },
-            {
+//                 name: "Дояна Коровкина ",
+//                 won: false,
+//                 userId: 54,
+//             },
+//             {
 
-                name: "Сарика Хяркина ",
-                won: true,
-                userId: 55,
-            },
+//                 name: "Сарика Хяркина ",
+//                 won: true,
+//                 userId: 55,
+//             },
 
-            {
+//             {
 
-                name: "Жижка Вейперова ",
-                won: false,
-                userId: 58,
-            },
+//                 name: "Жижка Вейперова ",
+//                 won: false,
+//                 userId: 58,
+//             },
 
-        ]
-    },
-    {
+//         ]
+//     },
+//     {
 
-        text: "Самая классная ",
-        fromWhomGender: "female",/*стоит обратить внимание что в отличии от dataClassStudents в Questions.jsx
-        здесь записывается не пол того кому отправляется сахарок, а от кого*/
-        fromClass: 10,//также дополнительно мы отправляем класс ответившего юзера
-        imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
-        date: 1677621840,
-        questionId: 5,
+//         text: "Самая классная ",
+//         fromWhomGender: "female",/*стоит обратить внимание что в отличии от dataClassStudents в Questions.jsx
+//         здесь записывается не пол того кому отправляется сахарок, а от кого*/
+//         fromClass: 10,//также дополнительно мы отправляем класс ответившего юзера
+//         imageLink: "https://i.ibb.co/Bn9p1Gv/image-78-1.png",
+//         date: 1677621840,
+//         questionId: 5,
 
-        students: [
-            {
+//         students: [
+//             {
 
-                name: "Ивана Бояркина ",
-                won: false,
-                userId: 53,
-            },
-            {
+//                 name: "Ивана Бояркина ",
+//                 won: false,
+//                 userId: 53,
+//             },
+//             {
 
-                name: "Дивана Покрывалкина ",
-                won: false,
-                userId: 54,
-            },
-            {
+//                 name: "Дивана Покрывалкина ",
+//                 won: false,
+//                 userId: 54,
+//             },
+//             {
 
-                name: "Сарика Хяркина ",
-                won: true,
-                userId: 55,
-            },
+//                 name: "Сарика Хяркина ",
+//                 won: true,
+//                 userId: 55,
+//             },
 
-            {
+//             {
 
-                name: "Опять Понеделкина ",
-                won: false,
-                userId: 58,
-            },
+//                 name: "Опять Понеделкина ",
+//                 won: false,
+//                 userId: 58,
+//             },
 
-        ]
-    }
-]
+//         ]
+//     }
+// ]
 
 // const isPremium = false
 // const paidRevealNamesLeft = 2
-const chosenComplimentNumber = 1
+
 const firstLetter = "В"
-const currentQuestionGender = questionData[chosenComplimentNumber].fromWhomGender
+
 
 export const NewComplimentsDetails = () => {
     const dispatch = useDispatch()
+    const { isLoad: isLoading, data: questionData } = useSelector((state) => state.compliment);
+
     const isPremium = true //useSelector((state) => state.premiumStatus.data.isPremium);//сюда надо перекинуть инфу о заработаных монетах из Questions
     const paidRevealNamesLeft = 2 //useSelector((state) => state.premiumStatus.data.paidRevealNamesLeft);
     const userBehindPremium = true
     const isRevealed = false
     useEffect(() => {
-        dispatch(getPremiumStatus())
+        dispatch(getComplimentList());
+        dispatch(getUser());
     }, [])
 
     const location = useLocation()
-    const params = useParams()
+
+
     const navigate = useNavigate()
     console.log("status", isPremium)
     console.log(location)
@@ -118,72 +123,74 @@ export const NewComplimentsDetails = () => {
     const [paidPopVisible, setPaidPopVisible] = useState(false)
     console.log("paid: " + paidPopVisible)
     console.log("isPremium: " + isPremium)
-    return (
-        <Background currentQuestionGender={currentQuestionGender}>
-            <Parent>
-                {paidPopVisible && (<><BlurOverlay onClick={() => setPaidPopVisible(false)} />
-                    <WhiteOverflow>
-                        <WhiteWrapper>
-                            <CentralImage src={GuyInTheHole} />
-                            <TextPaidTop>первая буква имени</TextPaidTop>
-                            <TextBigLetter>{firstLetter}</TextBigLetter>
-                            <ButtonPaid onClick={() => {
-                                if (paidRevealNamesLeft < 0) {
-                                    console.log('animate red')
-                                } else {
-                                    if (userBehindPremium) {
-                                        console.log('show block')
+    if (!isLoading && questionData) {
+        const { id } = useParams();
+        console.log("_id", id)
+        const chosenComplimentNumber = questionData.findIndex(comp => comp._id === id);
+        console.log("number", chosenComplimentNumber)
+        const currentQuestionGender = questionData[chosenComplimentNumber].fromWhomGender
+        return (
+            <Background currentQuestionGender={currentQuestionGender}>
+                <Parent>
+                    {paidPopVisible && (<><BlurOverlay onClick={() => setPaidPopVisible(false)} />
+                        <WhiteOverflow>
+                            <WhiteWrapper>
+
+                                <CentralImage src={GuyInTheHole} />
+                                <TextPaidTop>первая буква имени</TextPaidTop>
+                                <TextBigLetter>{firstLetter}</TextBigLetter>
+                                <ButtonPaid onClick={() => {
+                                    if (paidRevealNamesLeft < 0) {
+                                        console.log('animate red')
                                     } else {
-                                        console.log('reveal the name')
+                                        if (userBehindPremium) {
+                                            console.log('show block')
+                                        } else {
+                                            console.log('reveal the name')
+                                        }
                                     }
-
-
-
                                 }
-                            }
-                            } ><KeyIcon />&nbsp; раскрыть полное имя</ButtonPaid>
-                            <TextPaidDescription>осталось раскрытий имени: {paidRevealNamesLeft}</TextPaidDescription>
+                                } ><KeyIcon />&nbsp; раскрыть полное имя</ButtonPaid>
+                                <TextPaidDescription>осталось раскрытий имени: {paidRevealNamesLeft}</TextPaidDescription>
 
-                        </WhiteWrapper>
-                    </WhiteOverflow></>)
-                }
-                <ExitButton onClick={() => navigate('/newcompliments')}><WhiteExitIcon /></ExitButton>
-                <TopText>
-                    {currentQuestionGender == 'male' ? <MiniPic src={Boy} /> : <MiniPic src={Girl} />}
-                    от  {currentQuestionGender == 'male' ? "мальчика" : "девочки"} из {questionData[chosenComplimentNumber].fromClass} класса
-                </TopText>
+                            </WhiteWrapper>
+                        </WhiteOverflow></>)
+                    }
+                    <ExitButton onClick={() => navigate('/newcompliments')}><WhiteExitIcon /></ExitButton>
 
-                <TheQuestionSpace >
-                    <TheQuestionImageSpace>
-                        <TheQuestionImage src={questionData[chosenComplimentNumber].imageLink} />
-                    </TheQuestionImageSpace>
-                    <TheQuestionText >
-                        {questionData[chosenComplimentNumber].text}
-                    </TheQuestionText>
-                </TheQuestionSpace>
-                <NameChoice>
-                    {questionData[chosenComplimentNumber].students.map(({ name, won, userId }) => (
-                        <ButtonName key={userId}
-                            activeColor={won === true}
+                    <GenderImage src={currentQuestionGender == 'male' ? Boy : Girl} />
+                    <TopText>
+                        {/* {currentQuestionGender == 'male' ? <MiniPic src={Boy} /> : <MiniPic src={Girl} />} */}
+                        от  {currentQuestionGender == 'male' ? "мальчика" : "девочки"} из {questionData[chosenComplimentNumber].fromClass} класса
+                    </TopText>
+                    <TheQuestionSpace> <TheQuestionText >
+                        {questionData[chosenComplimentNumber].questionText}
+                    </TheQuestionText></TheQuestionSpace>
 
-                        >
+                    <NameChoice>
+                        {questionData[chosenComplimentNumber].loseUserIdArray.map(({ firstName, lastName, won = false, userId }) => (
+                            <ButtonName key={userId}
+                                activeColor={won === true}
+                            >
+                                <Text>
+                                    {firstName} {lastName}
+                                </Text>
+                            </ButtonName>
+                        ))}
+                    </NameChoice>
+                    <AdText>
+                        <TgIcon /><Text>@caxapok_bot</Text>
+                    </AdText>
+                    <ButtonInvite onClick={() =>
+                        isPremium ? setPaidPopVisible(true) : navigate('/payadd')//переход на рекламу (надо чтобы можно было вернуться назад)
+                    }><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite>
+                </Parent>
+            </Background >
 
-                            <Text>
-                                {name}
-                            </Text>
-                        </ButtonName>
-                    ))}
-                </NameChoice>
-                <AdText>
-                    <TgIcon /><Text>@caxapok_bot</Text>
-                </AdText>
-                <ButtonInvite onClick={() =>
-                    isPremium ? setPaidPopVisible(true) : navigate('/payadd')//переход на рекламу (надо чтобы можно было вернуться назад)
-                }><KeyIcon /><Text>Узнать от кого этот сахарок</Text></ButtonInvite>
-            </Parent>
-        </Background >
-
-    )
+        )
+    } else {
+        <div>Loading...</div>
+    }
 }
 
 const Parent = st.div`
@@ -196,16 +203,16 @@ const Parent = st.div`
     `;
 const BlurOverlay = st.div`
 
-width:100%;
-top:0;
-bottom:0;
-right:0;
-background: rgba(255, 255, 255, 0.2);
-backdrop-filter: blur(15px);
-position: fixed;
-z-index:9;
-cursor: pointer;
-`;
+        width:100%;
+        top:0;
+        bottom:0;
+        right:0;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        position: fixed;
+        z-index:9;
+        cursor: pointer;
+        `;
 
 const WhiteWrapper = st.div`
     transform: translateY(-15%);
@@ -273,12 +280,14 @@ const ButtonPaid = st.div`
 const CentralImage = st.img`
     width: 100px;
     `;
-
+const GenderImage = st.img`
+margin-top: 50px;
+    width: 120px;
+    `;
 
 const TheQuestionSpace = st.div`
     text-align: center;
     line-height: 25px;
-    height:250px;
     margin-bottom: 1vw;
     `;
 
@@ -317,7 +326,7 @@ const NameChoice = st.div`
 
 const ButtonInvite = st.div`
     position:fixed;
-    bottom:30px;
+    top:70vh;
         background: #0F1217;
         margin-top: 15px;
         border-radius: 55px;
@@ -327,7 +336,7 @@ const ButtonInvite = st.div`
         justify-content: center;
         padding: 5px 15px;
         align-items: center;
-        width:80%;
+        width:85%;
         font-weight: 500;
         font-size: 15px;
         line-height: 18px;
@@ -371,6 +380,7 @@ const TopText = st.div`
     text-align: center;
     padding:5px;
     color: #FDFDFF;
+    margin-bottom: 40px;
     `;
 
 const ButtonName = st.div`

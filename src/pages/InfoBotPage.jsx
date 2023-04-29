@@ -2,10 +2,20 @@ import React from 'react';
 import st from '@emotion/styled'
 import InfoBotPicture from '../pictures/InfoBotPicture.png';
 import { MainLayout } from '../components/MainLayout';
+import $api from '../utils/api';
 
+const sendRegistrationFinished = async () => {
+    try {
+        //api call should be here instead
+        const result = await $api.post('/user/registrationFinished', { registrationFinished: true });
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const InfoBotPage = () => {
+
     return (
-        <MainLayout nextPage={"/questions"} prevPage={"/choicePromo"}>
+        <MainLayout nextPage={"/questions"} prevPage={"/choicePromo"} clickMainButton={() => sendRegistrationFinished()} >
             <Parent>
                 <Header>
                     ЭТО САХАР-БОТ!

@@ -2,10 +2,14 @@ import {
 	PEOPLE_LIST,
 	PEOPLE_LIST_SUCCESS,
 	PEOPLE_LIST_ERROR,
+	FRIEND_LIST,
+	FRIEND_LIST_SUCCESS,
+	FRIEND_LIST_ERROR,
 	ADD_FRIEND,
 	ADD_FRIEND_SUCCESS,
 	ADD_FRIEND_ERROR
 } from '../actions/friendAction';
+
 
 const initialState = {
 	peopleList: {
@@ -30,8 +34,8 @@ export default (state = initialState, action) => {
 		case PEOPLE_LIST:
 			return {
 				...state,
-				people: {
-					...state.people,
+				peopleList: {
+					...state.peopleList,
 					isLoad: true,
 				}
 			};
@@ -48,7 +52,32 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				peopleList: {
-					...state.people,
+					...state.peopleList,
+					error: action.error,
+					isLoad: false,
+				}
+			}; case FRIEND_LIST:
+			return {
+				...state,
+				friendList: {
+					...state.friendList,
+					isLoad: true,
+				}
+			};
+		case FRIEND_LIST_SUCCESS:
+			return {
+				...state,
+				friendList: {
+					list: action.data,
+					isLoad: false,
+					error: null,
+				}
+			};
+		case FRIEND_LIST_ERROR:
+			return {
+				...state,
+				friendList: {
+					...state.friendList,
 					error: action.error,
 					isLoad: false,
 				}

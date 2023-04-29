@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
             };
         case QUESTION_LIST_ERROR:
             return {
-                ...state,
+                ...initialState,
                 error: action.error,
                 isLoad: false,
             };

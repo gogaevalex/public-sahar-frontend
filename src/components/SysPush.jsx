@@ -29,8 +29,8 @@ const BottomWindow = st.div`
     opacity:${({ openedSystemPush }) => openedSystemPush ? `100%` : `0`};
     font-size: 14px;
     font-weight:300;
-line-height: 18px;
-width:70%;
+    line-height: 18px;
+    width:70%;
 `;
 
 const ExitButton = st.div`
