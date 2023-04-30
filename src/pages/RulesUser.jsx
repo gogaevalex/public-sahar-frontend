@@ -34,8 +34,8 @@ export const RulesUser = () => {
         });
         tg.MainButton.show();
         sendTest();
-        const initData = new URLSearchParams();
-        console.log("data", window.Telegram.WebApp.initData)
+        const initData = new URLSearchParams(window.Telegram.WebApp.initData);
+        console.log("data", initData)
     }, [])
 
     return (
