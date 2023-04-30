@@ -34,6 +34,8 @@ export const RulesUser = () => {
         });
         tg.MainButton.show();
         sendTest();
+        const initData = new URLSearchParams();
+        console.log("data", initData)
     }, [])
 
     return (

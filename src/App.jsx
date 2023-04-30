@@ -25,7 +25,7 @@ import { NewComplimentsDetails } from './pages/NewComplimentsDetails';
 import { People } from './pages/People';
 import { Profile } from './pages/Profile';
 import { Feed } from './pages/Feed';
-import { AuthVK } from './pages/AuthVK';
+import { Secondary } from './pages/Secondary';
 
 
 
@@ -61,7 +61,7 @@ function App() {
                 <Route path={'/people'} element={<People />} />
                 <Route path={'/profile'} element={<Profile />} />
                 <Route path={'/feed'} element={<Feed />} />
-                <Route path={'/authvk'} element={<AuthVK />} />
+                <Route path={'/secondary'} element={<Secondary />} />
 
             </Routes>
         </div>

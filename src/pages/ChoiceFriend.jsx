@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import st from '@emotion/styled'
 import { MainLayout } from '../components/MainLayout';
 import { CrossIcon } from '../icons/CrossIcon';
 import { TickIcon } from '../icons/TickIcon';
-import {getPeopleList} from '../redux/actions';
+import { getPeopleList } from '../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const dataFriend = [
@@ -36,7 +37,7 @@ const dataFriend = [
 export const ChoiceFriend = () => {
     const [listFriend, setListFriend] = useState([]);
     const dispatch = useDispatch();
-	const {id: mongoTeacherId} = useSelector((state) => state.teacher);
+    const { id: mongoTeacherId } = useSelector((state) => state.teacher);
     useEffect(() => {
         dispatch(getPeopleList(schoolId))
     }, []);
@@ -64,7 +65,7 @@ export const ChoiceFriend = () => {
                     Добавь всех кого знаешь
                 </Header>
                 <BodyContent>
-                    {dataFriend.map(({name, id}) => {
+                    {dataFriend.map(({ name, id }) => {
                         let activeFriend = listFriend.find((item) => item === id);
                         return (
                             <OneFriend key={id}>
@@ -72,10 +73,11 @@ export const ChoiceFriend = () => {
                                     {name}
                                 </Text>
                                 <ButtonSelect onClick={(event) => changeFriendList(event, id)} activeFriend={activeFriend}>
-                                    {activeFriend ? <TickIcon/> : <CrossIcon/>}
+                                    {activeFriend ? <TickIcon /> : <CrossIcon />}
                                 </ButtonSelect>
                             </OneFriend>
-                    )})}
+                        )
+                    })}
                 </BodyContent>
             </Parent>
         </MainLayout>
@@ -117,7 +119,7 @@ const Text = st.div`
 `;
 
 const ButtonSelect = st.div`
-    background: ${({activeFriend}) => activeFriend ? "#05B2DC" : "#F15BB5"};
+    background: ${({ activeFriend }) => activeFriend ? "#05B2DC" : "#F15BB5"};
     cursor: pointer;
     padding: 6px 18px;
     border-radius: 4px;

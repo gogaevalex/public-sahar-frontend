@@ -6,7 +6,7 @@ import { RegistrationVK } from '../components/RegistrationVK';
 
 
 
-export const AuthVK = () => {
+export const Secondary = () => {
     return (
 
         <Parent>
