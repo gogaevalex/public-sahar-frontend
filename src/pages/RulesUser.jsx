@@ -1,13 +1,28 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
-import {useTelegram} from "../hooks/useTelegram";
+import { useTelegram } from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const RulesUser = () => {
 
-    const {tg} = useTelegram();
+    const { tg } = useTelegram();
     const navigate = useNavigate();
+    const sendTest = async () => {
+        try {
+            //api call should be here instead
+            const res = await axios({
+                method: 'get',
+                url: "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m",
+                params: {
+
+                }
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
         tg.ready();
@@ -18,6 +33,7 @@ export const RulesUser = () => {
             navigate("/choiceClass");
         });
         tg.MainButton.show();
+        sendTest();
     }, [])
 
     return (
@@ -28,7 +44,7 @@ export const RulesUser = () => {
             <BodyContent>
                 Нажимая кнопку “Продолжить” я соглашаюсь с правилами пользования и с правилами кофиденцальности и подтверждаю что мой возраст больше 14 лет.
             </BodyContent>
-            <img src={RulesSmilePicture} alt="rulesSmilePicture"/>
+            <img src={RulesSmilePicture} alt="rulesSmilePicture" />
         </Parent>
     )
 }
