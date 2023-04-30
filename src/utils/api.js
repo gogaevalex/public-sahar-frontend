@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = `https://c7f3-2-84-140-131.ngrok-free.app/api`
+export const API_URL = `https://sahar.ngrok.io/api`
 
 const $api = axios.create({
 
