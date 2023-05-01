@@ -19,15 +19,7 @@ export const RulesUser = () => {
             console.log(error)
         }
     }
-    const initializeData = async (data) => {
-        try {
-            //api call should be here instead
-            const result = await $api.post('/user/initializeData', { data });
-            return result
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
 
     useEffect(() => {
         tg.ready();
