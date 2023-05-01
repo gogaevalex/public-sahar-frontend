@@ -3,7 +3,7 @@ import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import { useTelegram } from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import $api from '../utils/api';
 
 export const RulesUser = () => {
 
