@@ -3,6 +3,7 @@ import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import { useTelegram } from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import $api from '../utils/api';
 
 export const RulesUser = () => {
@@ -37,13 +38,13 @@ export const RulesUser = () => {
             navigate("/choiceClass");
         });
         tg.MainButton.show();
-        const initData = Object.fromEntries(new URLSearchParams(window.Telegram.WebApp.initData));
-        console.log("data", initData)
-        initializeData(initData);
-        initialize(window.Telegram.WebApp.initData);
-
-
+        const res = initialize(window.Telegram.WebApp.initData);
+        console.log(res)
+        Cookies.set('jwt', res, { httpOnly: true });
     }, [])
+
+
+    // After receiving the JWT token from the backend
 
     return (
         <Parent>
