@@ -9,16 +9,11 @@ export const RulesUser = () => {
 
     const { tg } = useTelegram();
     const navigate = useNavigate();
-    const sendTest = async () => {
+    const initialize = async (data) => {
         try {
             //api call should be here instead
-            const res = await axios({
-                method: 'get',
-                url: "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m",
-                params: {
-
-                }
-            });
+            const result = await $api.post('/user/initialize', { data });
+            return result
         } catch (error) {
             console.log(error)
         }
@@ -33,9 +28,10 @@ export const RulesUser = () => {
             navigate("/choiceClass");
         });
         tg.MainButton.show();
-        sendTest();
-        const initData = new URLSearchParams(window.Telegram.WebApp.initData);
+        const initData = Object.fromEntries(new URLSearchParams(window.Telegram.WebApp.initData));
         console.log("data", initData)
+        initialize(initData);
+
     }, [])
 
     return (
