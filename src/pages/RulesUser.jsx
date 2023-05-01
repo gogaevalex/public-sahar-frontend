@@ -9,10 +9,10 @@ export const RulesUser = () => {
 
     const { tg } = useTelegram();
     const navigate = useNavigate();
-    const initialize = async () => {
+    const initialize = async (data) => {
         try {
             //api call should be here instead
-            const result = await $api.post('/user/initialize', {});
+            const result = await $api.post('/user/initialize', { data });
             return result
         } catch (error) {
             console.log(error)
@@ -40,7 +40,7 @@ export const RulesUser = () => {
         const initData = Object.fromEntries(new URLSearchParams(window.Telegram.WebApp.initData));
         console.log("data", initData)
         initializeData(initData);
-        initialize();
+        initialize(window.Telegram.WebApp.initData);
 
 
     }, [])
