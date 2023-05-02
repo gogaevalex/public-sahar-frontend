@@ -14,7 +14,7 @@ export const RulesUser = () => {
         try {
             //api call should be here instead
             const result = await $api.post('/user/initialize', { data });
-            return result
+            localStorage.setItem('jwt', result);
         } catch (error) {
             console.log(error)
         }
