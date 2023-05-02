@@ -5,20 +5,29 @@ import { useTelegram } from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import $api from '../utils/api';
-import axios from 'axios';
+
 export const RulesUser = () => {
 
     const { tg } = useTelegram();
     const navigate = useNavigate();
     const initialize = async (data) => {
-        axios.post('https://sahar.ngrok.io/api/user/initialize', { data })
-            .then(response => {
-                // Store JWT token in local storage
-                localStorage.setItem('jwt', response.data.token);
-            })
-            .catch(error => console.error(error));
+        try {
+            //api call should be here instead
+            const result = await $api.post('/user/initialize', { data });
+            return result
+        } catch (error) {
+            console.log(error)
+        }
     }
 
+    //  const initialize = async (data) => {
+    //     axios.post('https://sahar.ngrok.io/api/user/initialize', { data })
+    //     .then(response => {
+    //         // Store JWT token in local storage
+    //         localStorage.setItem('jwt', response.data.token);
+    //     })
+    //     .catch(error => console.error(error));
+    // }
 
     useEffect(() => {
         tg.ready();
@@ -29,7 +38,9 @@ export const RulesUser = () => {
             navigate("/choiceClass");
         });
         tg.MainButton.show();
-        initialize(window.Telegram.WebApp.initData);
+        const res = initialize(window.Telegram.WebApp.initData);
+        console.log(res)
+        Cookies.set('jwt', res, { httpOnly: true });
     }, [])
 
 
