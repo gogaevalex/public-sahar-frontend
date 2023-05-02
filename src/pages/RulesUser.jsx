@@ -14,6 +14,10 @@ export const RulesUser = () => {
         try {
             //api call should be here instead
             const result = await $api.post('/user/initialize', { data });
+
+            // Store JWT token in local storage
+            localStorage.setItem('jwt', result);
+
             return result
         } catch (error) {
             console.log(error)
