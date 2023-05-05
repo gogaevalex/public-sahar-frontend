@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import st from '@emotion/styled'
 import RulesSmilePicture from '../pictures/RulesSmilePicture.png';
 import { useTelegram } from "../hooks/useTelegram";
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import $api from '../utils/api';
 
 export const RulesUser = () => {
-
+    const [isRegistered, setIsRegistered] = useState(false)
     const { tg } = useTelegram();
     const navigate = useNavigate();
     const initialize = async (data) => {
@@ -16,6 +16,7 @@ export const RulesUser = () => {
             const result = await $api.post('/user/initialize', { data });
             localStorage.setItem('jwt', result.data.refreshToken);
             console.log('jwt', result.data.refreshToken)
+            return result.data.isRegistered
         } catch (error) {
             console.log(error)
         }
@@ -40,14 +41,11 @@ export const RulesUser = () => {
         });
         tg.MainButton.show();
         const res = initialize(window.Telegram.WebApp.initData);
-        console.log(res)
-        Cookies.set('jwt', res, { httpOnly: true });
+        setIsRegistered(res)
     }, [])
-
-
-    // After receiving the JWT token from the backend
-
-    return (
+    return isRegistered ? (
+        <Redirect to="/questions" />
+    ) : (
         <Parent>
             <Header>
                 Правила пользования
@@ -57,7 +55,9 @@ export const RulesUser = () => {
             </BodyContent>
             <img src={RulesSmilePicture} alt="rulesSmilePicture" />
         </Parent>
-    )
+    );
+
+
 }
 
 const Parent = st.div`
