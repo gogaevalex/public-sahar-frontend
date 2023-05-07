@@ -32,6 +32,7 @@ export const RulesUser = () => {
     // }
 
     useEffect(() => {
+        console.log("running")
         tg.ready();
         tg.MainButton.setParams({
             text: 'Продолжить'
