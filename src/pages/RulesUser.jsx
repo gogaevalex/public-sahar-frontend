@@ -45,9 +45,8 @@ export const RulesUser = () => {
         console.log("isRegistered1", isRegistered)
     }, [])
     console.log("isRegistered", isRegistered)
-    return isRegistered ? (
-        <Redirect to="/questions" />
-    ) : (
+    isRegistered ? navigate("/questions") : null
+    return (
         <Parent>
             <Header>
                 Правила пользования
