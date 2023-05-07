@@ -41,8 +41,9 @@ export const RulesUser = () => {
         });
         tg.MainButton.show();
         const res = initialize(window.Telegram.WebApp.initData);
-        setIsRegistered(res)
+        setIsRegistered(res);
     }, [])
+    console.log("isRegistered", isRegistered)
     return isRegistered ? (
         <Redirect to="/questions" />
     ) : (
