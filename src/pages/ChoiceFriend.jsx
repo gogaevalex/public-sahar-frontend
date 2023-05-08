@@ -10,7 +10,7 @@ import { MenuLayout } from '../components/MenuLayout';
 import { PopUp } from '../components/PopUp';
 
 
-export const People = () => {
+export const ChoiceFriend = () => {
     const [activeClass, setActiveClass] = useState([]);
     const [value, setValue] = useState("");
     const dispatch = useDispatch()
