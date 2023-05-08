@@ -30,11 +30,11 @@ import { Secondary } from './pages/Secondary';
 
 
 function App() {
-    const { onToggleButton, tg } = useTelegram();
 
-    useEffect(() => {
-        tg.ready();
-    }, [])
+
+    // useEffect(() => {
+    //     tg.ready();
+    // }, [])
     return (
         <div className="App">
             <Routes>
