@@ -31,7 +31,8 @@ export const RulesUser = () => {
     //     .catch(error => console.error(error));
     // }
 
-    useEffect(() => {
+    useEffect(async () => {
+
         console.log("running")
         tg.ready();
         tg.MainButton.setParams({
@@ -41,7 +42,9 @@ export const RulesUser = () => {
             navigate("/choiceClass");
         });
         tg.MainButton.show();
-        const res = initialize(window.Telegram.WebApp.initData);
+
+        const res = await initialize(window.Telegram.WebApp.initData);
+
         setIsRegistered(res);
         console.log("isRegistered1", isRegistered)
     }, [])
