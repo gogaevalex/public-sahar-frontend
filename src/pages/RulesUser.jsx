@@ -16,7 +16,7 @@ export const RulesUser = () => {
             const result = await $api.post('/user/initialize', { data });
             localStorage.setItem('jwt', result.data.refreshToken);
             console.log('jwt', result.data.refreshToken)
-            return result.data.isRegistered
+            setIsRegistered(result.data.isRegistered)
         } catch (error) {
             console.log(error)
         }
@@ -31,7 +31,7 @@ export const RulesUser = () => {
     //     .catch(error => console.error(error));
     // }
 
-    useEffect(async () => {
+    useEffect(() => {
 
         console.log("running")
         tg.ready();
@@ -43,10 +43,8 @@ export const RulesUser = () => {
         });
         tg.MainButton.show();
 
-        const res = await initialize(window.Telegram.WebApp.initData);
+        initialize(window.Telegram.WebApp.initData);
 
-        setIsRegistered(res);
-        console.log("isRegistered1", isRegistered)
     }, [])
     console.log("isRegistered", isRegistered)
     //isRegistered ? navigate("/questions") : null
