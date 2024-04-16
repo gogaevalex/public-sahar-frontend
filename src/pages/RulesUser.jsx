@@ -47,7 +47,7 @@ export const RulesUser = () => {
 
     }, [])
     console.log("isRegistered", isRegistered)
-    //isRegistered ? navigate("/questions") : null
+    isRegistered ? navigate("/questions") : null
     return (
         <Parent>
             <Header>
